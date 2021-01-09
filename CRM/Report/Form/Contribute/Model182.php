@@ -38,7 +38,7 @@ use CRM_Atmod182_ExtensionUtil as E;
 
 class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Repeat {
   const PAIS_ESPANYA = 1198;
-  
+
   protected $_customGroupExtends = array(
     'Contact',
     'Individual',
@@ -452,7 +452,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
     $columnNameFiscalName = $this->_fiscalNameAlias;
     $columnNameFiscalLastName = $this->_fiscalLastNameAlias;
-    $columnNameOrganitationFiscalName = $this->_organizationFiscalNameAlias;      
+    $columnNameOrganitationFiscalName = $this->_organizationFiscalNameAlias;
 
     $idFiscales = array();
 
@@ -475,7 +475,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       // encuentra la deducción y la recurrencia para cada contacto
 
       // Los importes del año de la declaración y del anterior tienen entre paréntesis el número de aportaciones realizadas,
-      // hay que quitarlos para poderlos tratar correctamente 
+      // hay que quitarlos para poderlos tratar correctamente
       list($cleanThisYearAmount) = explode(' ', $row['contribution1_total_amount_sum']);
       list($cleanLastYearAmount) = explode(' ', $row['contribution2_total_amount_sum']);
 
@@ -587,24 +587,26 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   public function postProcess() {
     parent::postProcess();
 
-    // @todo sólo en el caso que este definido el tipo financiero en especie 
     // Revisa i avisa si hay donativos en especie este pasado año
-    $filterDate = $this->_submitValues['receive_date1_relative'];
-    if ($filterDate == 'previous.year') {
-      $previousYear = date("Y") - 1;
-      $startPreviousYear = '01-01-' . $previousYear;
-      $endPreviousYear = '31-12-' . $previousYear;
-      if ( count($this->_financialTypesSpeciesField) > 0 ) {
-        $result = civicrm_api3('Contribution', 'getcount', [
-          'financial_type_id' => $this->_financialTypesSpeciesField,
-          'receive_date' => ['BETWEEN' => ['' . $startPreviousYear . '', '' . $endPreviousYear . '']],
-          'contribution_status_id' => "Completed",
-        ]);
-        $this->assign('species', $result);
+
+    if ($this->_submitValues && $this->_financialTypesSpeciesField) {
+      $filterDate = $this->_submitValues['receive_date1_relative'];
+      if ($filterDate == 'previous.year') {
+        $previousYear = date("Y") - 1;
+        $startPreviousYear = '01-01-' . $previousYear;
+        $endPreviousYear = '31-12-' . $previousYear;
+        if ( count($this->_financialTypesSpeciesField) > 0 ) {
+          $result = civicrm_api3('Contribution', 'getcount', [
+            'financial_type_id' => $this->_financialTypesSpeciesField,
+            'receive_date' => ['BETWEEN' => ['' . $startPreviousYear . '', '' . $endPreviousYear . '']],
+            'contribution_status_id' => "Completed",
+          ]);
+          $this->assign('species', $result);
+        }
+        $this->assign('previousYear', $previousYear);
+        $this->assign('integrityErrors', $this->_integrityErrors);
+        $this->assign('warningErrors', $this->_warningErrors);
       }
-      $this->assign('previousYear', $previousYear);
-      $this->assign('integrityErrors', $this->_integrityErrors);
-      $this->assign('warningErrors', $this->_warningErrors);
     }
 
   }
@@ -644,7 +646,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       }
     }
   }
-  
+
   /**
    * Get the tax base organization of an organization
    *
