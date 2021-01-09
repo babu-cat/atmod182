@@ -1,0 +1,118 @@
+{htxt id='atmod182-nature-id-title'}
+  {ts}Declarant Nature{/ts}
+{/htxt}
+{htxt id='atmod182-nature-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Se hará constar el dígito numérico indicativo de la naturaleza del declarante,
+      de acuerdo con la siguiente relación:
+    {/ts}
+  </p>
+    <p>
+      <strong>1</strong>: Entidad beneficiaria de los incentivos regulados en el
+      Título III de la Ley 49/2002, de 23 de diciembre, de régimen fiscal de las
+      entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
+    </p>
+    <p>
+      <strong>2</strong>: Fundación legalmente reconocida que rinde cuentas al
+      órgano del protectorado correspondiente o asociación declarada de utilidad
+      pública a que se refieren el artículo 68.3.b) de la Ley del Impuesto sobre
+      la Renta de las Personas Físicas.
+    </p>
+    <p><strong>3</strong>: Titular o administrador de un patrimonio protegido
+      regulado en la Ley 41/2003, de 18 de noviembre, de protección patrimonial
+      de las personas con discapacidad y de modificación del Código Civil, de la
+      Ley de Enjuiciamiento Civil y de la Normativa Tributaria con esta finalidad.
+    </p>
+    <p><strong>4</strong>: Partidos Políticos, Federaciones, Coaliciones o
+      Agrupaciones de Electores en los términos previstos en la Ley Orgánica 8/2007,
+      de 4 de julio, de financiación de partidos políticos.
+    </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-dni-id-title'}
+  {ts}Columna DNI{/ts}
+{/htxt}
+{htxt id='atmod182-dni-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Selecciona el campo utilizado para guardar el DNI
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-cif-id-title'}
+  {ts}Columna CIF{/ts}
+{/htxt}
+{htxt id='atmod182-cif-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Selecciona el campo utilizado para guardar el CIF
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-financialTypeField-id-title'}
+  {ts}Tipo Financiacion{/ts}
+{/htxt}
+{htxt id='atmod182-financialTypeField-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Selecciona el tipo de financiacion que deseas declarar
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-financialTypeSpeciesField-id-title'}
+  {ts}Tipo Financiacion en Especie{/ts}
+{/htxt}
+{htxt id='atmod182-financialTypeSpeciesField-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Selecciona el tipo de financiacion en especie que deseas declarar
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-atmod182_anonymousIndividual-id-title'}
+  {ts domain='cat.babu.atmod182'}
+    Select individual contact used as Anonymous contact
+  {/ts}
+{/htxt}
+{htxt id='atmod182-atmod182_anonymousIndividual-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Select individual contact used as Anonymous contact
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-countryField-id-title'}
+  {ts}Pais{/ts}
+{/htxt}
+{htxt id='atmod182-countryField-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Selecciona Espanya
+    {/ts}
+  </p>
+  </ul>
+{/htxt}
+
+{htxt id='atmod182-declare182-id-title'}
+  {ts}Declare 182{/ts}
+{/htxt}
+{htxt id='atmod182-declare182-id'}
+  <p>
+    {ts domain='cat.babu.atmod182'}
+      Si se selecciona un campo personalizado este servir&aacute; para indicar cuando una contribuci&oacute;n no se tiene que tener en cuenta para generar los informes del Modelo 182.
+    {/ts}
+  </p>
+  </ul>
+{/htxt}

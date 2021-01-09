@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/admin/atmod182</path>
+    <page_callback>CRM_Atmod182_Form_ATMod182Admin</page_callback>
+    <title>ATMod182 Settings</title>
+    <adminGroup>CiviContribute</adminGroup>
+    <icon>admin/small/Profile.png</icon>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+</menu>
