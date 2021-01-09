@@ -1,4 +1,4 @@
-# ATMod182
+# CiviCRM ATMod182
 
 ATMod182 allows extraction of files to present the 182 form to the *Agencia Estatal de Administración Tributaria (AEAT)* of Spain.
 
@@ -10,7 +10,7 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 - Go to **Administer > CiviReport > Create New Report from Template** and select **ATMod182**
 
-- From the ATMod182 generated Report you can validate donations relative data clicking the **Validate 182** button 
+- From the ATMod182 generated Report you can validate donations relative data clicking the **Validate 182** button
 
 - Once data is validated, a 182 formatted file can be exported clicking the **Export 182** button  
 
