@@ -221,6 +221,20 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_where .= !empty($clauses) ? " AND ( " . implode(' OR ', $clauses) . " )" : '';
   }
 
+  /**
+   * @param array $fields
+   * @param array $files
+   * @param CRM_Core_Form $self
+   *
+   * @return array
+   */
+  public static function formRule($fields, $files, $self) {
+    $errors = parent::formRule($fields, $files, $self);
+    // Sin esta línea no deja crear el informe
+    unset($errors['fields']);
+    return $errors;
+  }
+
  /**
    * @param $rows
    *
