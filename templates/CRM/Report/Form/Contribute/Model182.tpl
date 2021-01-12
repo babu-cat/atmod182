@@ -115,7 +115,7 @@
                 {foreach from=$error item=error_id}
                   <ul>
                     <li>
-                      <span class="messages status crm-error no-popup"> {$error_id} </span><br>
+                      <span class="messages status crm-error no-popup"> {$error_id.1} </span><br>
                     </li>
                   </ul>
                 {/foreach}
