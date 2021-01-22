@@ -178,9 +178,9 @@
 
 	  <tr>
 		  <th colspan=2>{ts}Declarables{/ts}</th>
-		  <td>{ts}{$statistics.taxable_donors}{/ts}</td>
-		  <td>{ts}{$statistics.taxable_donation_count}{/ts}</td>
-		  <td>{ts}{$statistics.taxable_donation_amount}{/ts}</td>
+		  <td>{$statistics.taxable_donors}</td>
+		  <td>{$statistics.taxable_donation_count}</td>
+		  <td>{$statistics.taxable_donation_amount}</td>
 	  </tr>
 
 	  <tr>
@@ -190,26 +190,26 @@
 		  <th rowspan=2>{ts}No declarables{/ts}</th>
 		  {/if}
 		  <th>{ts}Falta NIF/CIF{/ts}</th>
-		  <td>{ts}{$statistics.no_taxable_nif_donors}{/ts}</td>
-		  <td>{ts}{$statistics.no_taxable_nif_donation_count}{/ts}</td>
-		  <td>{ts}{$statistics.no_taxable_nif_donation_amount}{/ts}</td>
+		  <td>{$statistics.no_taxable_nif_donors}</td>
+		  <td></td>
+		  <td>{$statistics.no_taxable_nif_donation_amount}</td>
 	  </tr>
 
 	  {if $declareConfigured == 1 }
 	  <tr>
-		  <th>{ts}Marcados "No declarar"{/ts}</th>
-		  <td>{ts}{$statistics.no_taxable_no_declare_donors}{/ts}</td>
-		  <td>{ts}{$statistics.no_taxable_no_declare_donation_count}{/ts}</td>
-		  <td>{ts}{$statistics.no_taxable_no_declare_donation_amount}{/ts}</td>
+		  <th>{ts}Contr. marcadas "No declarar"{/ts}</th>
+		  <td>{$statistics.no_taxable_no_declare_donors}</td>
+		  <td>{$statistics.no_taxable_no_declare_donation_count}</td>
+		  <td>{$statistics.no_taxable_no_declare_donation_amount}</td>
 	  </tr>
 	  {/if}
 
     {if $anonymousConfigured == 1 }
 	  <tr>
 		  <th>{ts}Anónimos{/ts}</th>
-		  <td>{ts}1{/ts}</th>
-		  <td>{ts}{$statistics.anonymous_donations_count}{/ts}</td>
-		  <td>{ts}{$statistics.anonymous_donations_amount}{/ts}</td>
+		  <td>1</th>
+		  <td>{$statistics.anonymous_donations_count}</td>
+		  <td>{$statistics.anonymous_donations_amount}</td>
 	  </tr>
 	  {/if}
 
