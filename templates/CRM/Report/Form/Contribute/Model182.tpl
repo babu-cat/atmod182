@@ -225,9 +225,6 @@
 
   {include file="CRM/Report/Form.tpl"}
 
-  {* We need this reference for the js injection below *}
-  {assign var=csv value="_qf_"|cat:$form.formName|cat:"_submit_csv"}
-
   {* The nbps; are a mimic of what other buttons do in templates/CRM/Report/Form/Actions.tpl *}
   {assign var=validate182 value="_qf_"|cat:$form.formName|cat:"_submit_validate182"}
   {$form.$validate182.html}&nbsp;&nbsp;
@@ -241,21 +238,19 @@
     <script>
       CRM.$(function($) {
         var button_export_182 = '{/literal}{$form.$export182.id}{literal}';
-        var button_validate_182 = '{/literal}{$form.$validate182.id}{literal}';
-
-        {/literal}
+        var button_validate_182 = '{/literal}{$form.$validate182.id}{literal}';{/literal}
           {literal}
             if ($('.crm-report-field-form-block .crm-submit-buttons').size() > 0) {
-              $('input#' + button_validate_182).appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
+              $("button[id='" + button_validate_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
               {if $noerrors == 1}
-                {literal}$('input#' + button_export_182).appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
+                {literal}$("button[id='" + button_export_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
               {/if}{literal}
             }
             else {
               // Do not show the button when running in a dashlet
               // FIXME: we should probably just not add the HTML in the first place.
-              $('input#' + button_export_182).hide();
-              $('input#' + button_validate_182).hide();
+              $("button[id='" + button_validate_182 + "']").hide();
+              $("button[id='" + button_export_182 + "']").hide();
             }
           {/literal}
         {literal}

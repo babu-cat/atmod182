@@ -170,11 +170,19 @@ function atmod182_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Report_Form_Contribute_Model182') {
     $form->_182errorButtonName = $form->getButtonName('submit', 'validate182');
     $label = ts('Validate 182');
-    $form->addElement('submit', $form->_182errorButtonName, $label);
+    $form->addElement('xbutton', $form->_182errorButtonName, $label,
+    [
+      'type' => 'submit',
+      'class' => "crm-button crm-form-submit crm-button",
+    ]);
 
     $form->_182ButtonName = $form->getButtonName('submit', 'export182');
     $label = ts('Export to 182');
-    $form->addElement('submit', $form->_182ButtonName, $label);
+    $form->addElement('xbutton', $form->_182ButtonName, $label,
+    [
+      'type' => 'submit',
+      'class' => "crm-button crm-form-submit crm-button",
+    ]);
 
     // This hook also gets called when we click on a submit button,
     // so we can handle that part here too.
@@ -196,5 +204,4 @@ function atmod182_civicrm_buildForm($formName, &$form) {
       }
     }
   }
-
 }
