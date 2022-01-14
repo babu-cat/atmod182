@@ -92,7 +92,7 @@
   {/if}
   {if ($errors | @count > 0) || ($integrityErrors | @count > 0)}
     <div id="errors">
-      <div class="messages status crm-error no-popup">
+      <div class="messages error no-popup">
         <h3 class="nobackground">
           <i class="crm-i fa-exclamation-triangle"></i>
           <strong>{ts domain="cat.babu.atmod182"}Atención! Se han detectado errores que deben ser corregidos antes de poder exportar el fichero 182{/ts}</strong>
