@@ -459,7 +459,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     }
 
     if ($filialSenseSeu > 0) {
-      $this->_integrityErrors[] = "Hay " . $filialSenseSeu . " filiales que se declaran que no son sedes fiscales.";
+      $this->_integrityErrors[] = "Hay " . $filialSenseSeu . " filiales que se declaran que no son sedes fiscales y su sede fiscal no tiene ningún donativo en el año de la presentación.";
     }
 
     $columnNameFiscalName = $this->_fiscalNameAlias;
