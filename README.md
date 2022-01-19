@@ -2,7 +2,7 @@
 
 ATMod182 allows extraction of files to present the 182 form to the *Agencia Estatal de Administración Tributaria (AEAT)* of Spain.
 
-[Form 182](https://www.agenciatributaria.gob.es/AEAT.sede/en_gb/procedimientoini/GI02.shtml) is a information return about donations and contributions received in organizations like foundations and associations declared of public utility
+[Form 182](https://sede.agenciatributaria.gob.es/Sede/en_gb/procedimientoini/GI02.shtml) is a information return about donations and contributions received in organizations like foundations and associations declared of public utility
 
 ## Usage
 
@@ -16,17 +16,17 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 ## Included Libraries
 
-- [AEAT](https://github.com/babu-cat/AEAT) 1.4
+- [AEAT](https://github.com/babu-cat/AEAT) 1.4.1
 - [nif-nie-cif](https://github.com/amnesty/dataquality/blob/0227798/src/php/nif-nie-cif.php) from [Data Quality](https://github.com/amnesty/dataquality)
 
 ## Requirements
 
-- CiviCRM 5.13
+- CiviCRM 5.43
 
 ## Design Documentation
 
-- [Registry Design](https://www.agenciatributaria.es/AEAT.internet/en_gb/Inicio/Ayuda/Disenos_de_registro/Disenos_de_registro.shtml)
-- [Registry designs.Brief guidelines](https://www.agenciatributaria.es/AEAT.internet/en_gb/Inicio/Ayuda/Disenos_de_registro/Manuales_tecnicos_de_ayuda__Instrucciones_de_uso_/Manuales_tecnicos_de_ayuda__Instrucciones_de_uso_.shtml)
+- [Registry Design](https://sede.agenciatributaria.gob.es/Sede/en_gb/ayuda/disenos-registro/modelos-100-199.html)
+- [Registry designs.Brief guidelines](https://sede.agenciatributaria.gob.es/Sede/en_gb/ayuda/disenos-registro/ayuda.html)
 
 ## Roadmap
 

@@ -63,6 +63,13 @@
     </tr>
   </table>
   <p><small><i>* {ts domain="cat.babu.atmod182"}Los datos reflejados del declarante serán los que se añadirán en la generación del fichero a presentar a hacienda. Si hay algún error contacte con el administrador del sitio para que lo corrija.{/ts}</i></small></p>
+
+  {if $cataloniaDeductionPercentage}
+    <div class="messages warning no-popup">
+      Se ha configurado un <strong>porcentaje de deducción para las personas físicas residentes en Catalunya del {$cataloniaDeductionPercentage}%</strong>. Comprueba que tu entidad está dada de alta en el <a href="https://llengua.gencat.cat/ca/serveis/entitats/cens-entitats">Censo de entidades de fomento de la lengua catalana</a>. En caso contrario es necesario cambiar la <a href="/civicrm/admin/atmod182">configuración del módulo 182</a>. Si no sabes cómo o no tienes permisos, contacta con el administrador del sitio.
+    </div>
+  {/if}
+
   {if $filterDate == 'previous.year'}
 	  {if $species > 0}
 	    <div class="messages error no-popup">

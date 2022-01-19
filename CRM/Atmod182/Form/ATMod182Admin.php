@@ -17,6 +17,7 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
     'atmod182_declarantNif' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_personContact' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_tel' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_catalonia_deduction_percentage' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_dniField' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_cifField' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_anonymousIndividual' => self::ADMOD182_PREFERENCES_NAME,

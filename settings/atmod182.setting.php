@@ -68,6 +68,18 @@ return array(
     'description' => NULL,
     'help_text' => NULL,
   ),
+  'atmod182_catalonia_deduction_percentage' => array(
+    'name' => 'atmod182_catalonia_deduction_percentage',
+    'quick_form_type' => 'Element',
+    'type' => 'String',
+    'html_type' => 'Text',
+    'add' => '5.43.2',
+    'title' => E::ts('Deduction Percentage for Catalonia'),
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => NULL,
+    'help_text' => NULL,
+  ),
   'atmod182_dniField' => array(
     'name' => 'atmod182_dniField',
     'quick_form_type' => 'Element',

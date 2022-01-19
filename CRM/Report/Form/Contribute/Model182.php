@@ -101,6 +101,13 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     if ( !$this->_tel = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_tel')) {
       $this->_configErrors[] = E::ts('Contact Phone not defined');
     }
+
+    if ( $this->_cataloniaDeductionPercentage = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_catalonia_deduction_percentage')) {
+      if ($this->_cataloniaDeductionPercentage != '' ) {
+        $this->assign('cataloniaDeductionPercentage', $this->_cataloniaDeductionPercentage);
+      }
+    }
+
     if ( !$this->_dniFilesField = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_dniField')) {
       $this->_configErrors[] = E::ts('DNI not defined');
     }
@@ -391,6 +398,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_contact_clave' => array('title' => 'Clave', 'type' => 1));
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
 
+    if ( $this->_cataloniaDeductionPercentage ) {
+      $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
+    }
+
     foreach ( $rows as $rowNum => $row ) {
       // si el contacto existe en el array, se le asigna su contribución de hace 2 años
       if ( array_key_exists($row['contact_civireport_id'], $contribucions3)) {
@@ -513,6 +524,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_contact_clave'] = "A";
       $rows[$rowNum]['civicrm_contact_percentatge_deduccio'] = $result['percentage'];
       $rows[$rowNum]['civicrm_recurrencia_donatius'] = $result['recurrence'];
+
+      if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
+        $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
+      }
 
       $rows[$rowNum]['contribution1_total_amount'] = normalizeMoney($row['contribution1_total_amount_sum']);
       $rows[$rowNum]['contribution2_total_amount'] = normalizeMoney($row['contribution2_total_amount_sum']);
@@ -660,7 +675,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   }
 
   /**
-   * Get the tax base organization of an organization
+   *
    *
    * @param array $row the declared values
    * @param array $declarant array with the declarant values
@@ -672,19 +687,26 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $cifID = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_cifField');
     $nifcif = ($row['contact_civireport_contact_type'] == 'Individual') ? $row[getCustomFieldAlias($nifID)] : $row[getCustomFieldAlias($cifID)];
     $nature = ($row['contact_civireport_contact_type'] == 'Individual') ? 'F' : 'J';
-    $declared = array(
+    $provinceCode = substr( $row['address_civireport_postal_code'], 0, 2 );
+    $declared = [
       "exercise" => $declarant['exercise'],
       "NIFDeclarant" => $declarant['NIFDeclarant'],
       "externalId" => $row['contact_civireport_id'],
       "NIFDeclared" => $nifcif,
       "declaredName" => $row['contact_civireport_sort_name'],
-      "provinceCode" => substr( $row['address_civireport_postal_code'], 0, 2 ),
+      "provinceCode" => $provinceCode,
       "key" => $row['civicrm_contact_clave'],
       "deduction" => $row['civicrm_contact_percentatge_deduccio'],
       "donationImport" => $row['contribution1_total_amount_sum'],
       "recurrenceDonations" => $row['civicrm_recurrencia_donatius'],
       "nature" => $nature
-    );
+    ];
+
+    require_once 'includes/AEAT182.php';
+    if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince($provinceCode,AEAT182::ACC_CATALONIA) ) {
+      $declared['ACDeduction'] = AEAT182::ACC_CATALONIA;
+      $declared['ACDeductionNumber'] = $this->_cataloniaDeductionPercentage . '00';
+    }
     return $declared;
   }
 

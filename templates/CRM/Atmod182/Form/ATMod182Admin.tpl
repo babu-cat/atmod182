@@ -55,6 +55,14 @@
           {$form.atmod182_tel.html}
         </td>
       </tr>
+      <tr class="crm-atmod182-form-block-atmod182_catalonia_deduction_percentage">
+        <td class="label">
+          {$form.atmod182_catalonia_deduction_percentage.label}
+        </td>
+        <td>
+          {$form.atmod182_catalonia_deduction_percentage.html}
+        </td>
+      </tr>
     </table>
   </div>
 
