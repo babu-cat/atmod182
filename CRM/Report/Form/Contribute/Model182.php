@@ -703,7 +703,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     ];
 
     require_once 'includes/AEAT182.php';
-    if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince($provinceCode,AEAT182::ACC_CATALONIA) ) {
+    if ( $nature == 'F' && $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince($provinceCode,AEAT182::ACC_CATALONIA) ) {
       $declared['ACDeduction'] = AEAT182::ACC_CATALONIA;
       $declared['ACDeductionNumber'] = $this->_cataloniaDeductionPercentage . '00';
     }
