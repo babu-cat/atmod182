@@ -115,14 +115,14 @@
     			  		  {foreach from=$result.values item=contact}
       			  	  	{$contact.some_field}
     				    	{/foreach}
-                  <span> El contacto: <a href="/civicrm/contact/view?reset=1&cid={$key}">{$result.values.0.display_name}</a>, tiene estos errores:</span><br>
+                  <p> El contacto: <a href="/civicrm/contact/view?reset=1&cid={$key}">{$result.values.0.display_name}</a>, tiene estos errores:</p>
                 {else}
-                  <span> Los datos del <a href="/civicrm/admin/atmod182">declarante</a>, tiene estos errores:</span><br>
+                  <p> Los datos del <a href="/civicrm/admin/atmod182">declarante</a>, tiene estos errores:</p>
                 {/if}
                 {foreach from=$error item=error_id}
                   <ul>
                     <li>
-                      <span class="messages status crm-error no-popup"> {$error_id.1} </span><br>
+                      <p class="messages status crm-error no-popup"> {$error_id.1} </p>
                     </li>
                   </ul>
                 {/foreach}
