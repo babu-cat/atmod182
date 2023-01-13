@@ -16,7 +16,7 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 ## Included Libraries
 
-- [AEAT](https://github.com/babu-cat/AEAT) 1.4.1
+- [AEAT](https://github.com/babu-cat/AEAT) 1.4.2
 - [nif-nie-cif](https://github.com/amnesty/dataquality/blob/0227798/src/php/nif-nie-cif.php) from [Data Quality](https://github.com/amnesty/dataquality)
 
 ## Requirements
