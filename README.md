@@ -21,7 +21,7 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 ## Requirements
 
-- CiviCRM 5.43
+- CiviCRM 5.54
 
 ## Design Documentation
 

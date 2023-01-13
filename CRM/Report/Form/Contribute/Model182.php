@@ -342,6 +342,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
    */
   public function alterDisplay(&$rows) {
 
+    for ($i = 0; $i < count($rows); $i++) {
+        $rows[$i]['address_civireport_province_id'] = $rows[$i]['address_civireport_state_province_id'];
+    }
+      
     parent::alterDisplay($rows);
 
     require_once 'includes/nif-nie-cif.php';
@@ -427,50 +431,28 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       if ( !checkPostalCode($row['address_civireport_postal_code']) ) {
         $this->_integrityErrors[] = "El Codigo Postal del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es correcto.";
       }
+      
+      // @todo mover dentro de la librería AEAT182 y comprobar sólo al validar 182
+      if ( !checkProvince($row['address_civireport_postal_code'], $row['address_civireport_province_id']) ) {
+          $this->_integrityErrors[] = "La Provincia del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es correcto.";
+      }
 
       if ($this->_fiscalRelationshipField != '' ) {
         if ( $row['contact_civireport_contact_type'] == 'Organization' ) {
-          $rows[$rowNum]['civicrm_contact_id_seu_fiscal'] = $this->getTaxBase( $row['contact_civireport_id'] );
+          $rows[$rowNum]['civicrm_contact_id_seu_fiscal'] = $this->getIdSedeFiscal( $row['contact_civireport_id'] );
         }
       }
     }
 
-    // @todo tratamiento sin sedes fiscales (separar en un array, a poder ser ya agrupados, las sedes fiscales para tratarlas a posteriori)
-    $seus_fiscals = array();
+    // Mostramos por pantalla todas las filiales que tienen alguna contribución pendiente de ser movida a su sede
+    $filials = array();
     foreach ($rows as $key => $row) {
       if (!empty($row['civicrm_contact_id_seu_fiscal'])) {
-        // @todo a ver si lo podemos hacer de otro modo
         $row['key'] = $key;
-        if ($row['civicrm_contact_id_seu_fiscal'] == $row['contact_civireport_id']) {
-          $seus_fiscals[$row['civicrm_contact_id_seu_fiscal']]['seu_fiscal'] = $row;
-        }
-        else {
-          $seus_fiscals[$row['civicrm_contact_id_seu_fiscal']]['filial'][] = $row;
+        if ($row['civicrm_contact_id_seu_fiscal'] != $row['contact_civireport_id']) {
+          $this->_integrityErrors[] = "La filial con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> tiene alguna contribución que debe ser movida con su crédito blando correspondiente a su sede antes de generar el fichero.";
         }
       }
-    }
-
-    // @todo tratamiento de las sedes fiscales (sobre el array separado en el paso anterior)
-    // @todo priorizar la sede fiscal al cif. Es decir, agrupar por relaciones aunque tengan diferente CIF incluso si no lo tienen
-
-    // 1. si la sede ya está en el listado hacer el calculo de todas sus filiales y añadirla como declarante
-    $filialSenseSeu = 0;
-    foreach ($seus_fiscals as $id_seu => $row) {
-      if ( isset($row['seu_fiscal']) ) {
-        foreach ( $row['filial'] as $key => $filial) {
-          $rows[$seus_fiscals[$id_seu]['seu_fiscal']['key']]['contribution1_total_amount_sum'] = sumaImportes($rows[$seus_fiscals[$id_seu]['seu_fiscal']['key']]['contribution1_total_amount_sum'], $filial['contribution1_total_amount_sum']);
-          $rows[$seus_fiscals[$id_seu]['seu_fiscal']['key']]['contribution2_total_amount_sum'] = sumaImportes($rows[$seus_fiscals[$id_seu]['seu_fiscal']['key']]['contribution2_total_amount_sum'], $filial['contribution2_total_amount_sum']);
-          $rows[$seus_fiscals[$id_seu]['seu_fiscal']['key']]['contribution3_total_amount']     += $filial['contribution3_total_amount'];
-          unset($rows[$filial['key']]);
-        }
-      } else {
-        // 2. si la sede no está en el listado la tenemos que consultar via api y añadirla al modelo como declarante haciendo el cálculo de todas sus filiales
-        $filialSenseSeu++;
-      }
-    }
-
-    if ($filialSenseSeu > 0) {
-      $this->_integrityErrors[] = "Hay " . $filialSenseSeu . " filiales que se declaran que no son sedes fiscales y su sede fiscal no tiene ningún donativo en el año de la presentación.";
     }
 
     $columnNameFiscalName = $this->_fiscalNameAlias;
@@ -639,14 +621,14 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   }
 
   /**
-   * Get the tax base organization of an organization
+   * Obtiene el identificador de la sede fiscal
    *
-   * @param int $id Id of the organization
+   * @param int $id Id de la organización
    *
-   * @return int Id of the tax base organization of the organization (if exists)
+   * @return int Id de la sede fiscal (si existe)
    */
-  function getTaxBase($id) {
-    // Check if exist a tax base organization
+  function getIdSedeFiscal($id) {
+    // Comprueba si existe una sede fiscal
     $result = civicrm_api3('Relationship', 'get', [
       'sequential' => 1,
       'return' => ["contact_id_a"],
@@ -657,7 +639,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       return $result['values'][0]['contact_id_a'];
     }
     else {
-      // Check if tax base organization is itself
+      // Comprueba si ella misma es sede fiscal
       $result = civicrm_api3('Relationship', 'get', [
         'sequential' => 1,
         'return' => ["contact_id_a"],
@@ -668,14 +650,13 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         return $result['values'][0]['contact_id_a'];
       }
       else {
-        // There is no tax base organization
+        // No hay ninguna sede fiscal
         return NULL;
       }
     }
   }
 
   /**
-   *
    *
    * @param array $row the declared values
    * @param array $declarant array with the declarant values
