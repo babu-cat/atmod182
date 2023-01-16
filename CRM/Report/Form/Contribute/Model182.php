@@ -598,7 +598,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
     // Revisa i avisa si hay donativos en especie este pasado año
 
-    if ($this->_submitValues && $this->_financialTypesSpeciesField) {
+    if ($this->_submitValues && !empty($this->_financialTypesSpeciesField)) {
       $filterDate = $this->_submitValues['receive_date1_relative'];
       if ($filterDate == 'previous.year') {
         $previousYear = date("Y") - 1;
