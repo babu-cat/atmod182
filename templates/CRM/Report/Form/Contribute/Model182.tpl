@@ -239,18 +239,23 @@
   {if $noerrors == 1}
     {assign var=export182 value="_qf_"|cat:$form.formName|cat:"_submit_export182"}
     {$form.$export182.html}&nbsp;&nbsp;
+
+    {assign var=export993 value="_qf_"|cat:$form.formName|cat:"_submit_export993"}
+    {$form.$export993.html}&nbsp;&nbsp;  
   {/if}
 
   {literal}
     <script>
       CRM.$(function($) {
         var button_export_182 = '{/literal}{$form.$export182.id}{literal}';
-        var button_validate_182 = '{/literal}{$form.$validate182.id}{literal}';{/literal}
+        var button_validate_182 = '{/literal}{$form.$validate182.id}{literal}';
+        var button_export_993 = '{/literal}{$form.$export993.id}{literal}';{/literal}
           {literal}
             if ($('.crm-report-field-form-block .crm-submit-buttons').size() > 0) {
               $("button[id='" + button_validate_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
               {if $noerrors == 1}
                 {literal}$("button[id='" + button_export_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
+                {literal}$("button[id='" + button_export_993 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
               {/if}{literal}
             }
             else {
@@ -258,6 +263,7 @@
               // FIXME: we should probably just not add the HTML in the first place.
               $("button[id='" + button_validate_182 + "']").hide();
               $("button[id='" + button_export_182 + "']").hide();
+              $("button[id='" + button_export_993 + "']").hide();
             }
           {/literal}
         {literal}

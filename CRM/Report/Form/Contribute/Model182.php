@@ -79,6 +79,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
   public $_validate182Submitted = false;
   public $_export182Submitted = false;
+  public $_export993Submitted = false;
 
   /**
    * Class constructor.
@@ -544,11 +545,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   public function endPostProcess(&$rows = NULL) {
     parent::endPostProcess($rows);
 
-    if ($this->_export182Submitted || $this->_validate182Submitted) {
+    if ($this->_export182Submitted || $this->_validate182Submitted || $this->_export993Submitted) {
       require_once 'includes/AEAT182.php';
-
       $model = new AEAT182();
-
+      
       $declarant = array(
         "exercise" => date("Y", strtotime("-1 year")),
         "NIFDeclarant" => CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_declarantNif'),
@@ -589,6 +589,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
       if ($this->_export182Submitted) {
         $model->saveFile();
+      }
+
+      if ($this->_export993Submitted) {
+        $model->saveFile(true,'993');
       }
     }
   }
@@ -669,9 +673,11 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $nifcif = ($row['contact_civireport_contact_type'] == 'Individual') ? $row[getCustomFieldAlias($nifID)] : $row[getCustomFieldAlias($cifID)];
     $nature = ($row['contact_civireport_contact_type'] == 'Individual') ? 'F' : 'J';
     $provinceCode = substr( $row['address_civireport_postal_code'], 0, 2 );
+
     $declared = [
       "exercise" => $declarant['exercise'],
       "NIFDeclarant" => $declarant['NIFDeclarant'],
+      "declarantName" => $declarant['declarantName'],
       "externalId" => $row['contact_civireport_id'],
       "NIFDeclared" => $nifcif,
       "declaredName" => $row['contact_civireport_sort_name'],

@@ -54,6 +54,30 @@ function checkPostalCode ($postalCode) {
 }
 
 /**
+ * Función que comprueba si el codigo postal corresponde a la provincia indicada
+ *
+ * @param string $postalCode
+ *
+ * @return boolean
+ *
+ */
+function checkProvince ($postalCode, $province_id) {
+ 
+    $province_id_list = [ 2 => 2424,  3 => 2425,  4 => 2426,  1 => 2423, 33 => 2427,  5 => 2428,  6 => 2429,  7 => 2430,  8 => 2431,
+        48 => 2468,  9 => 2432, 10 => 2433, 11 => 2434, 39 => 2435, 12 => 2436, 51 => 2471, 13 => 2437, 14 => 10056,
+        15 => 2446, 16 => 2438, 20 => 2442, 17 => 2439, 18 => 2440, 19 => 2441, 21 => 2443, 22 => 2444, 23 => 2445,
+        24 => 2449, 25 => 2450, 27 => 2451, 28 => 2452, 29 => 2453, 52 => 2472, 30 => 2454, 31 => 2455, 32 => 2456,
+        34 => 2457, 35 => 2448, 36 => 2458, 26 => 2447, 37 => 2459, 38 => 2460, 40 => 2461, 41 => 2462, 42 => 2463,
+        43 => 2464, 44 => 2465, 45 => 10055, 46 => 2466, 47 => 2467, 49 => 2469, 50 => 2470];
+    
+    $postalCode = intval( mb_substr($postalCode,0,2) );
+    if ( $province_id_list[$postalCode] == $province_id ) {
+        return true;
+    }
+    else return false;
+}
+
+/**
  * Función que comprueba si hay algun identificador fiscal repetido
  *
  * @param array $idFiscales
