@@ -184,6 +184,14 @@ function atmod182_civicrm_buildForm($formName, &$form) {
       'class' => "crm-button crm-form-submit crm-button",
     ]);
 
+    $form->_993ButtonName = $form->getButtonName('submit', 'export993');
+    $label = ts('Export to 993');
+    $form->addElement('xbutton', $form->_993ButtonName, $label,
+    [
+      'type' => 'submit',
+      'class' => "crm-button crm-form-submit crm-button",
+    ]);
+
     // This hook also gets called when we click on a submit button,
     // so we can handle that part here too.
     $buttonName = $form->controller->getButtonName();
@@ -191,7 +199,8 @@ function atmod182_civicrm_buildForm($formName, &$form) {
     $output = CRM_Utils_Request::retrieve('output', 'String');
 
     if ( ($form->_182ButtonName == $buttonName || $output == 'export182') ||
-         ($form->_182errorButtonName == $buttonName || $output == 'validate182')) {
+         ($form->_182errorButtonName == $buttonName || $output == 'validate182') ||
+         ($form->_993ButtonName == $buttonName || $output == 'export993')) {
 
       if ($form->_182ButtonName == $buttonName || $output == 'export182') {
         $form->_export182Submitted = true;
@@ -200,6 +209,11 @@ function atmod182_civicrm_buildForm($formName, &$form) {
 
       if ($form->_182errorButtonName == $buttonName || $output == 'validate182') {
         $form->_validate182Submitted = true;
+        $form->setAddPaging(false);
+      }
+
+      if ($form->_993ButtonName == $buttonName || $output == 'export993') {
+        $form->_export993Submitted = true;
         $form->setAddPaging(false);
       }
     }
