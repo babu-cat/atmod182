@@ -169,7 +169,7 @@ function atmod182_civicrm_buildForm($formName, &$form) {
 
   if ($formName == 'CRM_Report_Form_Contribute_Model182') {
     $form->_182errorButtonName = $form->getButtonName('submit', 'validate182');
-    $label = ts('Validate 182');
+    $label = ts('Validate');
     $form->addElement('xbutton', $form->_182errorButtonName, $label,
     [
       'type' => 'submit',

@@ -38,6 +38,10 @@ use CRM_Atmod182_ExtensionUtil as E;
 
 class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Repeat {
   const PAIS_ESPANYA = 1198;
+  const PROVINCE_BARCELONA = 2431;
+  const PROVINCE_GIRONA = 2439;
+  const PROVINCE_LLEIDA = 2450;
+  const PROVINCE_TARRAGONA = 2464;
 
   protected $_customGroupExtends = array(
     'Contact',
@@ -52,6 +56,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   protected $_declarantNIF = array();
   protected $_personContact = array();
   protected $_tel = array();
+  protected $_cataloniaDeductionPercentage = array();
 
   // Custom Fields Mapping
 
@@ -80,6 +85,14 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   public $_validate182Submitted = false;
   public $_export182Submitted = false;
   public $_export993Submitted = false;
+
+  public $catalan_provinces = [
+    self::PROVINCE_BARCELONA,
+    self::PROVINCE_GIRONA,
+    self::PROVINCE_LLEIDA,
+    self::PROVINCE_TARRAGONA
+  ];
+
 
   /**
    * Class constructor.
@@ -152,6 +165,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columns['civicrm_contact']['fields']['sort_name']['required'] = TRUE;
     $this->_columns['civicrm_contact']['fields']['contact_type']['required'] = TRUE;
     $this->_columns['civicrm_contact']['fields']['exposed_id']['required'] = TRUE;
+    $this->_columns['civicrm_contact']['fields']['first_name']['required'] = TRUE;
+    $this->_columns['civicrm_contact']['fields']['last_name']['required'] = TRUE;
     $this->_columns['civicrm_contact']['fields']['id']['no_display'] = FALSE;
 
     if (is_numeric($this->_dniFilesField)) {
@@ -467,12 +482,17 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       // http://www.boe.es/buscar/doc.php?id=BOE-A-2015-11596 -> 184
       // http://www.boe.es/buscar/doc.php?id=BOE-A-2013-13798 -> 182
 
-      if ( $row['contact_civireport_contact_type'] == 'Individual' && ($this->_fiscalLastNameField != '' || $this->_fiscalNameField != '' )) {
-        if ( !empty( $row[$columnNameFiscalName] )) {
-          $rows[$rowNum]['contact_civireport_sort_name'] = $row[$columnNameFiscalLastName] . " " . $row[$columnNameFiscalName];
+      if ( $row['contact_civireport_contact_type'] == 'Individual') {
+
+        if ($this->_fiscalNameField != '' && !empty( $row[$columnNameFiscalName] )) {
+          $rows[$rowNum]['contact_civireport_first_name'] = $row[$columnNameFiscalName];
+        }      
+      
+        if ($this->_fiscalLastNameField != '' && !empty( $row[$columnNameFiscalLastName] )) {
+          $rows[$rowNum]['contact_civireport_last_name'] = $row[$columnNameFiscalLastName];
         }
       }
-      elseif ($row['contact_civireport_contact_type'] == 'Organization' && $this->_organitationFiscalNameField !='' ) {
+      elseif ( $row['contact_civireport_contact_type'] == 'Organization' && $this->_organitationFiscalNameField !='' ) {
         if ( !empty( $row[$columnNameOrganitationFiscalName] ) ){
           $rows[$rowNum]['contact_civireport_sort_name'] = $row[$columnNameOrganitationFiscalName];
         }
@@ -545,10 +565,20 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   public function endPostProcess(&$rows = NULL) {
     parent::endPostProcess($rows);
 
+    //Check if all catalan provinces are selected and results are filtered by individual contact type to determine if export993 button is shown
+    sort($this->catalan_provinces);
+    sort($this->_submitValues['state_province_id_value']);
+    
+    if($this->catalan_provinces == $this->_submitValues['state_province_id_value'] && 
+      sizeof($this->_submitValues['contact_type_value']) == 1 && 
+      $this->_submitValues['contact_type_value'][0] == 'Individual'){
+        $this->assign('enable_993', 1);
+      }
+    
     if ($this->_export182Submitted || $this->_validate182Submitted || $this->_export993Submitted) {
       require_once 'includes/AEAT182.php';
       $model = new AEAT182();
-      
+
       $declarant = array(
         "exercise" => date("Y", strtotime("-1 year")),
         "NIFDeclarant" => CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_declarantNif'),
@@ -674,17 +704,19 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $nature = ($row['contact_civireport_contact_type'] == 'Individual') ? 'F' : 'J';
     $provinceCode = substr( $row['address_civireport_postal_code'], 0, 2 );
 
+    $declaredName = ($row['contact_civireport_contact_type'] == 'Organization') ? $row['contact_civireport_sort_name'] : $row['contact_civireport_last_name'] . " " . $row['contact_civireport_first_name']  ;
+    $total_amount_sum = explode(" ",$row['contribution1_total_amount_sum'])[0];
     $declared = [
       "exercise" => $declarant['exercise'],
       "NIFDeclarant" => $declarant['NIFDeclarant'],
       "declarantName" => $declarant['declarantName'],
       "externalId" => $row['contact_civireport_id'],
       "NIFDeclared" => $nifcif,
-      "declaredName" => $row['contact_civireport_sort_name'],
+      "declaredName" => $declaredName,
       "provinceCode" => $provinceCode,
       "key" => $row['civicrm_contact_clave'],
-      "deduction" => $row['civicrm_contact_percentatge_deduccio'],
-      "donationImport" => $row['contribution1_total_amount_sum'],
+      "deduction" => $row['civicrm_contact_percentatge_deduccio'] * 100, 
+      "donationImport" => str_replace(".","",$total_amount_sum),
       "recurrenceDonations" => $row['civicrm_recurrencia_donatius'],
       "nature" => $nature
     ];

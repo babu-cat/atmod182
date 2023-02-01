@@ -67,7 +67,17 @@
   {if $cataloniaDeductionPercentage}
     <div class="messages warning no-popup">
       Se ha configurado un <strong>porcentaje de deducción para las personas físicas residentes en Catalunya del {$cataloniaDeductionPercentage}%</strong>. Comprueba que tu entidad está dada de alta en el <a href="https://llengua.gencat.cat/ca/serveis/entitats/cens-entitats">Censo de entidades de fomento de la lengua catalana</a>. En caso contrario es necesario cambiar la <a href="/civicrm/admin/atmod182">configuración del módulo 182</a>. Si no sabes cómo o no tienes permisos, contacta con el administrador del sitio.
+      {if $enable_993 == 0}
+        <p style='margin-bottom:0em'>Para generar el <strong>modelo 993</strong>, antes deben de aplicarse los siguientes filtros:
+          <ul>
+            <li>Tipo de contacto: <strong>individual</strong></li>
+            <li>Estado/provincia: <strong>Barcelona, Girona, Lleida y Tarragona</strong></li>
+          </ul>
+        </p>
+      {/if}
     </div>
+
+
   {/if}
 
   {if $filterDate == 'previous.year'}
@@ -237,11 +247,13 @@
   {$form.$validate182.html}&nbsp;&nbsp;
 
   {if $noerrors == 1}
-    {assign var=export182 value="_qf_"|cat:$form.formName|cat:"_submit_export182"}
-    {$form.$export182.html}&nbsp;&nbsp;
-
-    {assign var=export993 value="_qf_"|cat:$form.formName|cat:"_submit_export993"}
-    {$form.$export993.html}&nbsp;&nbsp;  
+    {if $enable_993 == 0}
+      {assign var=export182 value="_qf_"|cat:$form.formName|cat:"_submit_export182"}
+      {$form.$export182.html}&nbsp;&nbsp;
+    {else}
+      {assign var=export993 value="_qf_"|cat:$form.formName|cat:"_submit_export993"}
+      {$form.$export993.html}&nbsp;&nbsp; 
+    {/if}
   {/if}
 
   {literal}
@@ -255,7 +267,9 @@
               $("button[id='" + button_validate_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
               {if $noerrors == 1}
                 {literal}$("button[id='" + button_export_182 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
-                {literal}$("button[id='" + button_export_993 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
+                {if $enable_993 == 1}
+                  {literal}$("button[id='" + button_export_993 + "']").appendTo('.crm-report-field-form-block .crm-submit-buttons');{/literal}
+                {/if}
               {/if}{literal}
             }
             else {
