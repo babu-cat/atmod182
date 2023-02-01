@@ -16,7 +16,7 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 ## Included Libraries
 
-- [AEAT](https://github.com/babu-cat/AEAT) 1.5.1
+- [AEAT](https://github.com/babu-cat/AEAT) 1.5.3
 - [nif-nie-cif](https://github.com/amnesty/dataquality/blob/0227798/src/php/nif-nie-cif.php) from [Data Quality](https://github.com/amnesty/dataquality)
 
 ## Requirements
@@ -32,4 +32,4 @@ ATMod182 allows extraction of files to present the 182 form to the *Agencia Esta
 
 - Create a specific report for ATMod182 that does not depend on the Contribution Repeat core report (maybe with SearchKit)
 - Sería deseable poder marcar como declaradas las contribuciones procesadas en el modelo 182. De este modo se podría informar de la recurrencia con más rigor (solo tomando los donativos realmente declarados) y también se podría plantear poder generar informes complementarios y/o suplementarios.
-- [BUG] El informe trabaja con la dirección postal que se haya creado primero. Por ejemplo si se creó antes una dirección de trabajo que de residencia, la dirección que se utilizará será la de trabajo aunque la de residencia tenga especificado que sea la principal. Se debería limitar las direcciones a tener en cuenta según si existe una de carácter fiscal como primera opción y en su ausencia utilizar la marcada como principal.
+- Sería deseable poder exportar directamente el fichero para el modelo catalán 993
