@@ -70,7 +70,7 @@
       {if $enable_993 == 0}
         <p style='margin-bottom:0em'>Para generar el <strong>modelo 993</strong>, antes deben de aplicarse los siguientes filtros:
           <ul>
-            <li>Tipo de contacto: <strong>individual</strong></li>
+            <li>Tipo de contacto: <strong>{ts}Individual{/ts}</strong></li>
             <li>Estado/provincia: <strong>Barcelona, Girona, Lleida y Tarragona</strong></li>
           </ul>
         </p>
