@@ -567,7 +567,9 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
     //Check if all catalan provinces are selected and results are filtered by individual contact type to determine if export993 button is shown
     sort($this->catalan_provinces);
-    sort($this->_submitValues['state_province_id_value']);
+    if ( $this->_submitValues['state_province_id_value'] ) {
+      sort($this->_submitValues['state_province_id_value']);
+    }
     
     if($this->catalan_provinces == $this->_submitValues['state_province_id_value'] && 
       sizeof($this->_submitValues['contact_type_value']) == 1 && 
