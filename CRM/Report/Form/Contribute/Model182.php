@@ -417,6 +417,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_contact_id_seu_fiscal' => array('title' => 'Identificador sede fiscal', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_clave' => array('title' => 'Clave', 'type' => 1));
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_reduction' => array('title' => 'Importe desgravado', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount' => array('title' => 'Importe real', 'type' => 1));
 
     if ( $this->_cataloniaDeductionPercentage ) {
       $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
@@ -522,11 +524,14 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         $contactType,
         $cleanThisYearAmount,
         $cleanLastYearAmount,
-        $row['contribution3_total_amount']
+        $row['contribution3_total_amount'],
+        $row['address_civireport_postal_code']
       );
       $rows[$rowNum]['civicrm_contact_clave'] = "A";
       $rows[$rowNum]['civicrm_contact_percentatge_deduccio'] = $result['percentage'];
       $rows[$rowNum]['civicrm_recurrencia_donatius'] = $result['recurrence'];
+      $rows[$rowNum]['civicrm_reduction'] = strval($result['reduction']);
+      $rows[$rowNum]['civicrm_actual_amount'] = strval($result['actual_amount']);
 
       if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
@@ -567,7 +572,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
     //Check if all catalan provinces are selected and results are filtered by individual contact type to determine if export993 button is shown
     sort($this->catalan_provinces);
-    if ( $this->_submitValues['state_province_id_value'] ) {
+
+    if($this->_submitValues['state_province_id_value']){
       sort($this->_submitValues['state_province_id_value']);
     }
     
@@ -720,7 +726,9 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       "deduction" => $row['civicrm_contact_percentatge_deduccio'] * 100, 
       "donationImport" => str_replace(".","",$total_amount_sum),
       "recurrenceDonations" => $row['civicrm_recurrencia_donatius'],
-      "nature" => $nature
+      "nature" => $nature,
+      "reduction" => $row['civicrm_reduction'],
+      "actualAmount" => $row['civicrm_actual_amount']
     ];
 
     require_once 'includes/AEAT182.php';
