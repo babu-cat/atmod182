@@ -24,7 +24,7 @@
  +--------------------------------------------------------------------+
 *}
 
-{if $configErrors | @count > 0}
+{if count($configErrors) > 0}
   <div class="messages error no-popup">
     <h2>El módulo ATMod182 no se ha configurado correctamente. Por favor revise la <a href="/civicrm/admin/atmod182">configuración</a>.</h2>
     <p><strong>Errores encontrados:</strong></p>
@@ -98,7 +98,7 @@
 		  <strong>Atención!</strong> No se ha seleccionado 'Año anterior' como filtro del primer rango de fechas.
 	  </div>
   {/if}
-  {if $warningErrors | @count > 0}
+  {if $warningErrors && count($warningErrors) > 0}
   	<div class="messages warning no-popup">
   	  {foreach from=$warningErrors item=warning}
   	   	<li>
@@ -107,7 +107,7 @@
       {/foreach}
   	</div>
   {/if}
-  {if ($errors | @count > 0) || ($integrityErrors | @count > 0)}
+  {if (($errors && count($errors) > 0)) || ($integrityErrors && (count($integrityErrors) > 0))}
     <div id="errors">
       <div class="messages error no-popup">
         <h3 class="nobackground">
@@ -118,7 +118,7 @@
         <strong>{ts domain="cat.babu.atmod182"}{/ts}</strong>
         <ul>
           {foreach from=$errors item=error key=key}
-            {if $error | @count > 0}
+            {if count($error) > 0}
               <li>
                 {if is_numeric($key)}
                   {crmAPI var='result' entity='Contact' action='get' return="display_name" id=$key}
@@ -139,7 +139,7 @@
               </li>
             {/if}
           {/foreach}
-          {if $integrityErrors | @count > 0}
+          {if count($integrityErrors) > 0}
             {foreach from=$integrityErrors item=warning}
               <li>
                 <span>{$warning}</span>
@@ -150,7 +150,7 @@
       </div>
     </div>
   {/if}
-  {if $warnings | @count > 0}
+  {if $warnings && count($warnings) > 0}
     <div id="errors">
       <div class="messages status crm-warning no-popup">
         <h3 class="nobackground">
