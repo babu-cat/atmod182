@@ -270,4 +270,19 @@ return array(
       'callback' => 'CRM_Atmod182_Form_ATMod182Admin::getBooleanFields',
     ),
   ),
+  'atmod182_locationTypeField' => array(
+    'name' => 'atmod182_locationTypeField',
+    'quick_form_type' => 'Element',
+    'type' => 'String',
+    'html_type' => 'Select',
+    'add' => '5.3',
+    'title' => E::ts('Tax Residence'),
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'description' => NULL,
+    'help_text' => NULL,
+    'pseudoconstant' => array(
+      'callback' => 'CRM_Atmod182_Form_ATMod182Admin::getLocationTypeOptions',
+    ),
+  ),
 );

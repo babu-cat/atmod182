@@ -169,6 +169,14 @@
           {$form.atmod182_declaredAportation.html}
         </td>
       </tr>
+      <tr class="crm-atmod182-form-block-atmod182_locationTypeField">
+        <td class="label">
+          {$form.atmod182_locationTypeField.label}
+        </td>
+        <td>
+          {$form.atmod182_locationTypeField.html}
+        </td>
+      </tr>
     </table>
   </div>
 

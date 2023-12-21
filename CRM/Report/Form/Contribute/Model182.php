@@ -160,6 +160,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     if ($this->_declareField = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_declare182') ){
       $this->assign('declareConfigured', 1);
     }
+    $this->_locationTypeField = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_locationTypeField');
 
     $this->_columns['civicrm_address']['fields']['postal_code']['required'] = TRUE;
     $this->_columns['civicrm_contact']['fields']['sort_name']['required'] = TRUE;
@@ -413,7 +414,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     }
 
     $this->_columnHeaders += array('civicrm_contact_identificador_fiscal' => array('title' => 'Identificador fiscal', 'type' => 2));
-    $this->_columnHeaders += array('civicrm_contact_percentatge_deduccio' => array('title' => 'Porcentaje deducción', 'type' => 2));
+    $this->_columnHeaders += array('civicrm_contact_percentatge_deduccio' => array('title' => 'Porcentaje deducción', 'type' => 2));///
     $this->_columnHeaders += array('civicrm_contact_id_seu_fiscal' => array('title' => 'Identificador sede fiscal', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_clave' => array('title' => 'Clave', 'type' => 1));
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
@@ -473,6 +474,22 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       }
     }
 
+    //Consulta API per obtenir les adreces dels domicilis fiscals dels contactes
+    if ( !empty($llista) ) {
+      // llama a la api que retorna las contribuciones de hace 2 años de los contactos anteriormente introducidos en el array
+      $adreces = civicrm_api3('Address', 'get', array(
+        'sequential' => 1,
+        "return" => ["contact_id","street_address","postal_code","city","state_province_id.name","country_id.name"],
+        'contact_id' => array('IN' => array_keys($llista)),
+        'location_type_id' => $this->_locationTypeField,
+        'options' => array('limit' => 0),
+      ));
+    }
+
+    foreach($adreces['values'] as $address){
+      $fiscalAddress[$address['contact_id']] = $address; 
+    }
+
     $columnNameFiscalName = $this->_fiscalNameAlias;
     $columnNameFiscalLastName = $this->_fiscalLastNameAlias;
     $columnNameOrganitationFiscalName = $this->_organizationFiscalNameAlias;
@@ -498,6 +515,14 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         if ( !empty( $row[$columnNameOrganitationFiscalName] ) ){
           $rows[$rowNum]['contact_civireport_sort_name'] = $row[$columnNameOrganitationFiscalName];
         }
+      }
+
+      //Aplico dirección fiscal
+      if (array_key_exists($row['contact_civireport_id'],$fiscalAddress)){
+        $rows[$rowNum]['address_civireport_street_address'] = $fiscalAddress[$row['contact_civireport_id']]['street_address'];
+        $rows[$rowNum]['address_civireport_city'] = $fiscalAddress[$row['contact_civireport_id']]['city'];
+        $rows[$rowNum]['address_civireport_postal_code'] = $fiscalAddress[$row['contact_civireport_id']]['postal_code'];
+        $rows[$rowNum]['address_civireport_state_province_id'] = $fiscalAddress[$row['contact_civireport_id']]['state_province_id.name'];
       }
 
       // encuentra la deducción y la recurrencia para cada contacto

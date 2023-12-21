@@ -30,6 +30,7 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
     'atmod182_countryField' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_declare182' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_declaredAportation' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_locationTypeField' => self::ADMOD182_PREFERENCES_NAME,
   );
 
   /**
@@ -166,5 +167,14 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
      }
      return $customStringFieldsNames;
    }
+
+   public static function getLocationTypeOptions() {
+    $locationTypeOptions = CRM_Atmod182_Form_ATMod182Admin::getNullSelectOption(TRUE);
+    $locationType = civicrm_api3('LocationType', 'get', ['sequential' => 1]);
+    foreach ($locationType['values'] as $values) {
+      $locationTypeOptions[$values['id']] = $values['display_name'];
+    }
+    return $locationTypeOptions;
+  }
 
 }
