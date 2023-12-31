@@ -170,9 +170,9 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
 
    public static function getLocationTypeOptions() {
     $locationTypeOptions = CRM_Atmod182_Form_ATMod182Admin::getNullSelectOption(TRUE);
-    $locationType = civicrm_api3('LocationType', 'get', ['sequential' => 1]);
-    foreach ($locationType['values'] as $values) {
-      $locationTypeOptions[$values['id']] = $values['display_name'];
+    $locationTypes = civicrm_api4('LocationType', 'get', ['checkPermissions' => TRUE]);
+    foreach ($locationTypes as $locationType) {
+      $locationTypeOptions[$locationType['id']] = $locationType['display_name'];
     }
     return $locationTypeOptions;
   }

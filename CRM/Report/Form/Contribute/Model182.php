@@ -477,16 +477,16 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     //Consulta API per obtenir les adreces dels domicilis fiscals dels contactes
     if ( !empty($llista) ) {
       // llama a la api que retorna las contribuciones de hace 2 años de los contactos anteriormente introducidos en el array
-      $adreces = civicrm_api3('Address', 'get', array(
-        'sequential' => 1,
-        "return" => ["contact_id","street_address","postal_code","city","state_province_id.name","country_id.name"],
-        'contact_id' => array('IN' => array_keys($llista)),
-        'location_type_id' => $this->_locationTypeField,
-        'options' => array('limit' => 0),
+      $adreces = civicrm_api4('Address', 'get', array(
+        "select" => ["contact_id","street_address","postal_code","city","state_province_id.name","country_id.name"],
+        'where' => [
+          ['contact_id', 'IN', array_keys($llista)],
+          ['location_type_id', '=', $this->_locationTypeField],
+        ],
       ));
     }
 
-    foreach($adreces['values'] as $address){
+    foreach($adreces as $address){
       $fiscalAddress[$address['contact_id']] = $address; 
     }
 
