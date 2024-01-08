@@ -414,7 +414,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     }
 
     $this->_columnHeaders += array('civicrm_contact_identificador_fiscal' => array('title' => 'Identificador fiscal', 'type' => 2));
-    $this->_columnHeaders += array('civicrm_contact_percentatge_deduccio' => array('title' => 'Porcentaje deducción', 'type' => 2));///
+    $this->_columnHeaders += array('civicrm_contact_percentatge_deduccio' => array('title' => 'Porcentaje deducción', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_id_seu_fiscal' => array('title' => 'Identificador sede fiscal', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_clave' => array('title' => 'Clave', 'type' => 1));
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
@@ -446,8 +446,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         $this->_integrityErrors[] = "El CIF " . $fiscalId . " del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es válido.";
       }
 
-      // @todo mover dentro de la librería AEAT182 y comprobar sólo al validar 182
-      if ( !checkPostalCode($row['address_civireport_postal_code']) ) {
+      if ( !AEAT182::checkPostalCode($row['address_civireport_postal_code']) ) {
         $this->_integrityErrors[] = "El Codigo Postal del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es correcto.";
       }
       
@@ -486,6 +485,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       ));
     }
 
+    $fiscalAddress = array();
     foreach($adreces as $address){
       $fiscalAddress[$address['contact_id']] = $address; 
     }

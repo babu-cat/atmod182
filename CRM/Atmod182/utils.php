@@ -33,27 +33,6 @@ function getCustomFieldAlias($id) {
 }
 
 /**
- * Función que comprueba si el codigo postal añadido corresponde a España
- *
- * @param string $postalCode
- *
- * @return boolean
- *
- */
-function checkPostalCode ($postalCode) {
-  if (validaPostal($postalCode) ) {
-    $postalCode = intval( mb_substr($postalCode,0,2) );
-    if ( $postalCode >= 1 && $postalCode <= 52 ) {
-      return true;
-    }
-    else return false;
-  }
-  else {
-    return false;
-  }
-}
-
-/**
  * Función que comprueba si el codigo postal corresponde a la provincia indicada
  *
  * @param string $postalCode
@@ -95,26 +74,6 @@ function checkIdFiscal ($idFiscales) {
     }
   }
   return $return;
-}
-
-/**
- * Función que comprueba si se ha añadido correctamente el codigo postal
- *
- * @param string $cadena
- *
- * @return boolean
- *
- */
-function validaPostal ($cadena) {
-  // Comprobamos que realmente se ha añadido el formato correcto
-  if ( preg_match('/^[0-9]{5}$/i', $cadena) ) {
-    // La instruccion se cumple
-    return true;
-  }
-  else {
-    // Contiene carácteres no validos
-    return false;
-  }
 }
 
 /**
