@@ -33,6 +33,7 @@
  */
 require_once 'CRM/Atmod182/Form/ATMod182Admin.php';
 require_once 'CRM/Atmod182/utils.php';
+require_once 'includes/AEAT182.php';
 
 use CRM_Atmod182_ExtensionUtil as E;
 
@@ -420,7 +421,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
     $this->_columnHeaders += array('civicrm_reduction' => array('title' => 'Importe desgravado', 'type' => 1));
     $this->_columnHeaders += array('civicrm_actual_amount' => array('title' => 'Importe real', 'type' => 1));
-
+    $this->_columnHeaders += array('civicrm_reduction_new' => array('title' => 'Importe desgravado normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount_new' => array('title' => 'Importe real normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_contribution_new' => array('title' => 'Importe contribución 2024', 'type' => 1));
+    
     if ( $this->_cataloniaDeductionPercentage ) {
       $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
     }
@@ -557,7 +561,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_recurrencia_donatius'] = $result['recurrence'];
       $rows[$rowNum]['civicrm_reduction'] = strval($result['reduction']);
       $rows[$rowNum]['civicrm_actual_amount'] = strval($result['actual_amount']);
-
+      $rows[$rowNum]['civicrm_reduction_new'] = strval($result['reduction_new']);
+      $rows[$rowNum]['civicrm_actual_amount_new'] = strval($result['actual_amount_new']);
+      $rows[$rowNum]['civicrm_contribution_new'] = strval($result['contribution_new']);
+            
       if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
       }
@@ -753,7 +760,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       "recurrenceDonations" => $row['civicrm_recurrencia_donatius'],
       "nature" => $nature,
       "reduction" => $row['civicrm_reduction'],
-      "actualAmount" => $row['civicrm_actual_amount']
+      "actualAmount" => $row['civicrm_actual_amount'],
+      "reduction_new" => $row['civicrm_reduction_new'],
+      "actualAmount_new" => $row['civicrm_actual_amount_new'],
+      "contribution_new" => $row['civicrm_contribution_new']
     ];
 
     require_once 'includes/AEAT182.php';

@@ -2,6 +2,7 @@
 
 require_once 'AEAT182RDeclarant.php';
 require_once 'AEAT182RDeclared.php';
+require_once 'includes/AEAT182.php';
 
 class AEAT182 {
 
@@ -215,6 +216,7 @@ class AEAT182 {
 
     $donationsRecurrence = 0;
 
+    //TODO Con la normativa de 2024, la recurrencia solo tendrá en cuenta los dos últimos años
     if ( ($amountLastYear > 0) &&
          ($amountTwoYearBefore > 0) &&
          ($amountThisYear >= $amountLastYear) &&
@@ -240,10 +242,23 @@ class AEAT182 {
         }
         $deducted_amount = (150 * 80 * 0.01) + ($partial_amount * intval($deduction_amount) * 0.01);
       }
-      //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
-      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
-        $deducted_amount += $amountThisYear * 15 * 0.01;
+
+      //Bloque relativo a la nueva normativa para 2024 de personas físicas
+      if ($amountThisYear <= 250) {
+        $deduction_amount_new = '80';
+        $deducted_amount_new = $amountThisYear * 80 * 0.01;
       }
+      else{
+        $partial_amount_new = $amountThisYear - 250;
+        if ($donationsRecurrence == 1) {
+          $deduction_amount_new = '45';
+        }
+        else {
+          $deduction_amount_new = '40';
+        }
+        $deducted_amount_new = (250 * 80 * 0.01) + ($partial_amount_new * intval($deduction_amount_new) * 0.01);
+      }      
+      // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
     }
     elseif ($contactType == self::SOCIETIES) {
       if ($donationsRecurrence == 1) {
@@ -254,11 +269,94 @@ class AEAT182 {
         $deduction_amount = '35';
         $deducted_amount = $amountThisYear * 35 * 0.01;
       }
+
+    //Bloque relativo a la nueva normativa para 2024 de personas jurídicas
+    if ($donationsRecurrence == 1) {
+      $deduction_amount_new = '50';
+      $deducted_amount_new = $amountThisYear * 50 * 0.01;
+    }
+    else {
+      $deduction_amount_new = '40';
+      $deducted_amount_new = $amountThisYear * 40 * 0.01;
+    }    
+    // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
     else {
       return array();
     }
-    return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence, 'reduction' => strval(number_format($deducted_amount, 2, ',', ' ')) . ' €', 'actual_amount' => strval(number_format($amountThisYear - $deducted_amount, 2, ',', ' ')) . ' €');
+
+    //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
+    if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
+    {
+      $deducted_amount += $amountThisYear * 15 * 0.01;
+      $deducted_amount_new += $amountThisYear * 15 * 0.01; //Importe según normativa 2024
+    }
+
+    // Inicio bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
+      //Bloque relativo a la nueva normativa para 2024 de personas físicas
+      if ($contactType == self::NATURAL_PERSON) {
+      $old_deduction = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? $deduction_amount + 15 : $deduction_amount;
+      $new_reduction = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? 95 : 80 ;
+      $constant = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? 20 : 5 ;
+     
+      // Si el importe no supera los 150€, no hay ningún cambio. En caso contrario, se aplica la nueva fórmula
+      if ($amountThisYear <= 150) {
+        $contribution_new = $amountThisYear;
+      }else{
+        $old_partial_amount = $amountThisYear-150;
+        $eq = (($old_partial_amount-(($old_deduction*0.01)*$old_partial_amount))-($old_partial_amount-(0.01*$new_reduction)*$old_partial_amount))*$constant;
+        //Suma de aportación último año + resultado de la fórmula
+        $eq_amountThisYear = $eq + $amountThisYear;
+
+        if($eq_amountThisYear <= 250){
+          $contribution_new = $eq_amountThisYear;
+        }else{
+          //Import fix per als primers 250€
+          $contribucion_new_less_250 = 250 * (0.01*(100-$new_reduction));
+
+          //Import real per restant fins a igualar aportació de 2023
+          $diff_actual_amount = ($amountThisYear - $deducted_amount) - $contribucion_new_less_250;
+
+          //calcular nuevos porcentajes de deducción a partir de la nueva cantidad (suma de aportación último año + resultado de la fórmula)
+          if($eq_amountThisYear > 250)
+          {
+            if ($donationsRecurrence == 1) {
+              $deduction_amount_partial = '45';
+            }
+            else {
+              $deduction_amount_partial = '40';
+            }
+
+            if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
+              $deduction_amount_partial += 15 ;
+            }
+          }
+          $contribucion_new_more_250 = $diff_actual_amount * 100 / (100 - $deduction_amount_partial);
+          $contribution_new = 250 + $contribucion_new_more_250;
+        }
+      }
+      // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
+    }
+    elseif ($contactType == self::SOCIETIES) {
+      //Bloque relativo a la nueva normativa para 2024 de personas Jurídicas
+      //Cálculo del porcentaje de la aportación que asume el contribuyente
+      $assumed_percentage = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? $deduction_amount_new + 15 : $deduction_amount_new ;
+      $contribution_new = ($amountThisYear - $deducted_amount) * 100 / (100-$assumed_percentage);
+      // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
+    }
+
+    // Fin bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
+    $actualAmount = $amountThisYear - $deducted_amount;
+    $actualAmountNew = $amountThisYear - $deducted_amount_new;
+
+    return array( 'percentage' => $deduction_amount , 
+                  'recurrence' => $donationsRecurrence,   
+                  'reduction' => strval(number_format($deducted_amount, 2, ',', ' ')) . ' €', 
+                  'actual_amount' => strval(number_format($amountThisYear - $deducted_amount, 2, ',', ' ')) . ' €',
+                  'reduction_new' => strval(number_format($deducted_amount_new, 2, ',', ' ')) . ' €', 
+                  'actual_amount_new' => strval(number_format($amountThisYear - $deducted_amount_new, 2, ',', ' ')) . ' €' ,          
+                  'contribution_new' => strval(number_format($contribution_new, 2, ',', ' ')) . ' €'           
+                );
   }
 
   /**
