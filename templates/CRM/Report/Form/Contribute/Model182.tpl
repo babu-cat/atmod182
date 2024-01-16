@@ -215,9 +215,9 @@
 	  {if $declareConfigured == 1 }
 	  <tr>
 		  <th>{ts}Falta código postal"{/ts}</th>
-		  <td>{$statistics.no_taxable_document_donors}</td>
-		  <td>{$statistics.no_taxable_document_donation_count}</td>
-		  <td>{$statistics.no_taxable_document_donation_amount}</td>
+		  <td>{$statistics.no_taxable_postal_code_donors}</td>
+		  <td>{$statistics.no_taxable_postal_code_donation_count}</td>
+		  <td>{$statistics.no_taxable_postal_code_donation_amount}</td>
 	  </tr>
 	  {/if}
 
