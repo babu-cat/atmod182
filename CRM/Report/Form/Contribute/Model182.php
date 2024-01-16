@@ -272,6 +272,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $statistics['no_taxable_nif_donors'] = 0;
     $statistics['no_taxable_nif_donation_amount'] = 0;
 
+    $statistics['no_taxable_document_donors'] = 0;
+    $statistics['no_taxable_document_donation_amount'] = 0;
+    $statistics['no_taxable_document_donation_count'] = 0;
+    
     $statistics['total_donors'] = 0;
     $statistics['total_donations_amount'] = 0;
     $statistics['total_donations_count'] = 0;
@@ -335,6 +339,10 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
           $statistics['no_taxable_nif_donors']++;
           $statistics['no_taxable_nif_donation_amount'] += $dao->contribution1_total_amount_sum;
         }
+      }elseif (empty($dao->address_civireport_postal_code)){
+          $statistics['no_taxable_document_donors']++;
+          $statistics['no_taxable_document_donation_count'] += $dao->contribution1_total_amount_count;
+          $statistics['no_taxable_document_donation_amount'] += $dao->contribution1_total_amount_sum;
       }
       else {
         $statistics['taxable_donors']++;

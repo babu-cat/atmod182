@@ -2,7 +2,6 @@
 
 require_once 'AEAT182RDeclarant.php';
 require_once 'AEAT182RDeclared.php';
-require_once 'includes/AEAT182.php';
 
 class AEAT182 {
 
@@ -205,7 +204,7 @@ class AEAT182 {
    * @param decimal $amountTwoYearBefore
    * @param string $cp
    * 
-   * @return array[percentage,recurrence,reduction,actual_amount]
+   * @return array[percentage,recurrence,reduction,actual_amount,reduction_new,actual_amount_new,contribution_new]
    */
   static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
 
@@ -270,15 +269,15 @@ class AEAT182 {
         $deducted_amount = $amountThisYear * 35 * 0.01;
       }
 
-    //Bloque relativo a la nueva normativa para 2024 de personas jurídicas
-    if ($donationsRecurrence == 1) {
-      $deduction_amount_new = '50';
-      $deducted_amount_new = $amountThisYear * 50 * 0.01;
-    }
-    else {
-      $deduction_amount_new = '40';
-      $deducted_amount_new = $amountThisYear * 40 * 0.01;
-    }    
+      //Bloque relativo a la nueva normativa para 2024 de personas jurídicas
+      if ($donationsRecurrence == 1) {
+        $deduction_amount_new = '50';
+        $deducted_amount_new = $amountThisYear * 50 * 0.01;
+      }
+      else {
+        $deduction_amount_new = '40';
+        $deducted_amount_new = $amountThisYear * 40 * 0.01;
+      }    
     // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
     else {
