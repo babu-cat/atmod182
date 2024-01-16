@@ -464,7 +464,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       
       // @todo mover dentro de la librería AEAT182 y comprobar sólo al validar 182
       if ( !checkProvince($row['address_civireport_postal_code'], $row['address_civireport_province_id']) ) {
-          $this->_integrityErrors[] = "La Provincia del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es correcto.";
+          $this->_integrityErrors[] = "La Provincia del contacto con identificador <a href='/civicrm/contact/view?reset=1&cid=" . $row['contact_civireport_id'] . "'>" . $row['contact_civireport_id'] . "</a> no es correcta.";
       }
 
       if ($this->_fiscalRelationshipField != '' ) {
