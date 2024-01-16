@@ -258,6 +258,13 @@ class AEAT182 {
         $deducted_amount_new = (250 * 80 * 0.01) + ($partial_amount_new * intval($deduction_amount_new) * 0.01);
       }      
       // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
+
+      //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
+      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
+      {
+        $deducted_amount += $amountThisYear * 15 * 0.01;
+        $deducted_amount_new += $amountThisYear * 15 * 0.01; //Importe según normativa 2024
+      }
     }
     elseif ($contactType == self::SOCIETIES) {
       if ($donationsRecurrence == 1) {
@@ -284,14 +291,7 @@ class AEAT182 {
       return array();
     }
 
-    //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
-    if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
-    {
-      $deducted_amount += $amountThisYear * 15 * 0.01;
-      $deducted_amount_new += $amountThisYear * 15 * 0.01; //Importe según normativa 2024
-    }
-
-    // Inicio bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
+      // Inicio bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
       //Bloque relativo a la nueva normativa para 2024 de personas físicas
       if ($contactType == self::NATURAL_PERSON) {
       $old_deduction = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? $deduction_amount + 15 : $deduction_amount;
@@ -339,8 +339,7 @@ class AEAT182 {
     elseif ($contactType == self::SOCIETIES) {
       //Bloque relativo a la nueva normativa para 2024 de personas Jurídicas
       //Cálculo del porcentaje de la aportación que asume el contribuyente
-      $assumed_percentage = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? $deduction_amount_new + 15 : $deduction_amount_new ;
-      $contribution_new = ($amountThisYear - $deducted_amount) * 100 / (100-$assumed_percentage);
+      $contribution_new = ($amountThisYear - $deducted_amount) * 100 / (100-$deduction_amount_new);
       // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
 
