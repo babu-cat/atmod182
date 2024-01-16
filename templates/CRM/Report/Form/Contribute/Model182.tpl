@@ -214,6 +214,15 @@
 
 	  {if $declareConfigured == 1 }
 	  <tr>
+		  <th>{ts}Falta código postal"{/ts}</th>
+		  <td>{$statistics.no_taxable_postal_code_donors}</td>
+		  <td>{$statistics.no_taxable_postal_code_donation_count}</td>
+		  <td>{$statistics.no_taxable_postal_code_donation_amount}</td>
+	  </tr>
+	  {/if}
+
+	  {if $declareConfigured == 1 }
+	  <tr>
 		  <th>{ts}Contr. marcadas "No declarar"{/ts}</th>
 		  <td>{$statistics.no_taxable_no_declare_donors}</td>
 		  <td>{$statistics.no_taxable_no_declare_donation_count}</td>
