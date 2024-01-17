@@ -431,7 +431,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_actual_amount' => array('title' => 'Importe real', 'type' => 1));
     $this->_columnHeaders += array('civicrm_reduction_new' => array('title' => 'Importe desgravado normativa 2024', 'type' => 1));
     $this->_columnHeaders += array('civicrm_actual_amount_new' => array('title' => 'Importe real normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_contribution_new' => array('title' => 'Importe contribución 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_contribution_new' => array('title' => 'Incremento sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
     
     if ( $this->_cataloniaDeductionPercentage ) {
       $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
