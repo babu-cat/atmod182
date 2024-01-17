@@ -1,6 +1,7 @@
 ## Release 1.5.6 (2024-01-17)
 
 - Change column name "Importe contribución 2024" to "Incremento sugerido con el mismo coste para el donante (nueva ley de mecenazgo)"
+- Update AEAT PHP library from 1.5.5 to [1.5.6](https://github.com/babu-cat/AEAT/releases/tag/1.5.6)
 
 ## Release 1.5.5 (2024-01-16)
 
