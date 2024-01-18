@@ -1,3 +1,9 @@
+## Release 1.5.7 (2024-01-18)
+
+- Show summary results table on the 182 report when validates
+- Update AEAT PHP library from 1.5.6 to [1.5.7](https://github.com/babu-cat/AEAT/releases/tag/1.5.7)
+- Fix wrong application of autonomous deduction for organizations on 182 report
+
 ## Release 1.5.6 (2024-01-17)
 
 - Change column name "Importe contribución 2024" to "Incremento sugerido con el mismo coste para el donante (nueva ley de mecenazgo)"

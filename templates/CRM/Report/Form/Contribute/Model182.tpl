@@ -64,6 +64,22 @@
   </table>
   <p><small><i>* {ts domain="cat.babu.atmod182"}Los datos reflejados del declarante serán los que se añadirán en la generación del fichero a presentar a hacienda. Si hay algún error contacte con el administrador del sitio para que lo corrija.{/ts}</i></small></p>
 
+  {if $noerrors == 1}
+  <table class="crm-info-panel" width=50%>
+    <tr class="columnheader-dark">
+      <th  style="background-color: #4d90eb" colspan=2>{ts domain="cat.babu.atmod182"}Resumen de los datos incluidos en la declaración{/ts}</th>
+    </tr>
+    <tr>
+      <th width=30% >{ts domain="cat.babu.atmod182"}Número total de declarados{/ts}</th>
+      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;"></td>
+    </tr>
+    <tr>
+      <th width=30%>{ts domain="cat.babu.atmod182"}Importe total a declarar{/ts}</th>
+      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;";></td>
+    </tr>
+  </table>
+  {/if}
+
   {if $cataloniaDeductionPercentage}
     <div class="messages warning no-popup">
       Se ha configurado un <strong>porcentaje de deducción para las personas físicas residentes en Catalunya del {$cataloniaDeductionPercentage}%</strong>. Comprueba que tu entidad está dada de alta en el <a href="https://llengua.gencat.cat/ca/serveis/entitats/cens-entitats">Censo de entidades de fomento de la lengua catalana</a>. En caso contrario es necesario cambiar la <a href="/civicrm/admin/atmod182">configuración del módulo 182</a>. Si no sabes cómo o no tienes permisos, contacta con el administrador del sitio.
@@ -181,7 +197,9 @@
       </div>
     </div>
   {/if}
+  
   <br>
+
   <p><strong><span style="color:red">ATENCIÓN!</span> El resumen numérico que sigue puede contener imprecisiones y solo se muestra para poder contrastar algunos números.</strong></p>
 
   <table class="report-layout statistics-table" width=50%>
