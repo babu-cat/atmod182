@@ -645,6 +645,11 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         $model->addDeclared($paramsDeclared);
       }
 
+      $total_amount = $model->getImport();
+      $contributorsQty = $model->getContributorsQty();
+      $this->assign('totalDonors', $contributorsQty);
+      $this->assign('totalDonationsAmount', $total_amount);
+
       if ($this->_validate182Submitted) {
         $this->assign('validate182', 1);
         $output = $model->check182();
