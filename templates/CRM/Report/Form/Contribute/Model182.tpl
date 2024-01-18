@@ -71,11 +71,11 @@
     </tr>
     <tr>
       <th width=30% >{ts domain="cat.babu.atmod182"}Número total de declarados{/ts}</th>
-      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;"></td>
+      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;">{$totalDonors}</td>
     </tr>
     <tr>
       <th width=30%>{ts domain="cat.babu.atmod182"}Importe total a declarar{/ts}</th>
-      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;";></td>
+      <td style="font-weight:bold;text-align: center;background-color: #c8dfff;font-size: 2em;padding: 1em;";>{$totalDonationsAmount}</td>
     </tr>
   </table>
   {/if}
