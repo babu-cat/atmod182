@@ -573,7 +573,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_actual_amount_new'] = strval($result['actual_amount_new']);
       $rows[$rowNum]['civicrm_contribution_new'] = strval($result['contribution_new']);
             
-      if ( $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
+      if ( $contactType == AEAT182::NATURAL_PERSON && $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
       }
 
