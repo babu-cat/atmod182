@@ -87,6 +87,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   public $_export182Submitted = false;
   public $_export993Submitted = false;
 
+  public $autonomousDeduction = false;
+
   public $catalan_provinces = [
     self::PROVINCE_BARCELONA,
     self::PROVINCE_GIRONA,
@@ -120,6 +122,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     if ( $this->_cataloniaDeductionPercentage = CRM_Core_BAO_Setting::getItem(CRM_Atmod182_Form_ATMod182Admin::ADMOD182_PREFERENCES_NAME, 'atmod182_catalonia_deduction_percentage')) {
       if ($this->_cataloniaDeductionPercentage != '' ) {
         $this->assign('cataloniaDeductionPercentage', $this->_cataloniaDeductionPercentage);
+        $this->autonomousDeduction = true;
       }
     }
 
@@ -427,11 +430,16 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_contact_id_seu_fiscal' => array('title' => 'Identificador sede fiscal', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_clave' => array('title' => 'Clave', 'type' => 1));
     $this->_columnHeaders += array('civicrm_recurrencia_donatius' => array('title' => 'Recurrencia de Donativos', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_reduction' => array('title' => 'Importe desgravado', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_actual_amount' => array('title' => 'Importe real', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_reduction_new' => array('title' => 'Importe desgravado normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_actual_amount_new' => array('title' => 'Importe real normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_contribution_new' => array('title' => 'Incremento sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_reduction_min' => array('title' => 'Importe mínimo desgravado', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_reduction_max' => array('title' => 'Importe máximo desgravado', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount_min' => array('title' => 'Importe real mínimo', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount_max' => array('title' => 'Importe real máximo', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_reduction_new_min' => array('title' => 'Importe desgravado mínimo normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_reduction_new_max' => array('title' => 'Importe desgravado máximo normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount_min_new' => array('title' => 'Importe real mínimo normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_actual_amount_max_new' => array('title' => 'Importe real máximo normativa 2024', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_contribution_new_min' => array('title' => 'Incremento mínimo sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
+    $this->_columnHeaders += array('civicrm_contribution_new_max' => array('title' => 'Incremento máximo sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
     
     if ( $this->_cataloniaDeductionPercentage ) {
       $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
@@ -557,7 +565,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         // No deberia de entrar aqui
       }
 
-      $result = AEAT182::getDeductionPercentAndDonationsRecurrence(
+      $aeat = new AEAT182(autonomousDeduction: $this->autonomousDeduction);
+      $result = $aeat->getDeductionPercentAndDonationsRecurrence(
         $contactType,
         $cleanThisYearAmount,
         $cleanLastYearAmount,
@@ -567,11 +576,16 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_contact_clave'] = "A";
       $rows[$rowNum]['civicrm_contact_percentatge_deduccio'] = $result['percentage'];
       $rows[$rowNum]['civicrm_recurrencia_donatius'] = $result['recurrence'];
-      $rows[$rowNum]['civicrm_reduction'] = strval($result['reduction']);
-      $rows[$rowNum]['civicrm_actual_amount'] = strval($result['actual_amount']);
-      $rows[$rowNum]['civicrm_reduction_new'] = strval($result['reduction_new']);
-      $rows[$rowNum]['civicrm_actual_amount_new'] = strval($result['actual_amount_new']);
-      $rows[$rowNum]['civicrm_contribution_new'] = strval($result['contribution_new']);
+      $rows[$rowNum]['civicrm_reduction_min'] = strval($result['reduction_min']);
+      $rows[$rowNum]['civicrm_reduction_max'] = strval($result['reduction_max']);
+      $rows[$rowNum]['civicrm_actual_amount_min'] = strval($result['actual_amount_min']);
+      $rows[$rowNum]['civicrm_actual_amount_max'] = strval($result['actual_amount_max']);
+      $rows[$rowNum]['civicrm_reduction_new_min'] = strval($result['reduction_new_min']);
+      $rows[$rowNum]['civicrm_reduction_new_max'] = strval($result['reduction_new_max']);
+      $rows[$rowNum]['civicrm_actual_amount_min_new'] = strval($result['actual_amount_min_new']);
+      $rows[$rowNum]['civicrm_actual_amount_max_new'] = strval($result['actual_amount_max_new']);
+      $rows[$rowNum]['civicrm_contribution_new_min'] = strval($result['contribution_new_min']);
+      $rows[$rowNum]['civicrm_contribution_new_max'] = strval($result['contribution_new_max']);
             
       if ( $contactType == AEAT182::NATURAL_PERSON && $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
@@ -625,7 +639,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     
     if ($this->_export182Submitted || $this->_validate182Submitted || $this->_export993Submitted) {
       require_once 'includes/AEAT182.php';
-      $model = new AEAT182();
+      $model = new AEAT182(autonomousDeduction: $this->autonomousDeduction);
 
       $declarant = array(
         "exercise" => date("Y", strtotime("-1 year")),
@@ -772,11 +786,16 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       "donationImport" => str_replace(".","",$total_amount_sum),
       "recurrenceDonations" => $row['civicrm_recurrencia_donatius'],
       "nature" => $nature,
-      "reduction" => $row['civicrm_reduction'],
-      "actualAmount" => $row['civicrm_actual_amount'],
-      "reduction_new" => $row['civicrm_reduction_new'],
-      "actualAmount_new" => $row['civicrm_actual_amount_new'],
-      "contribution_new" => $row['civicrm_contribution_new']
+      "reduction_min" => $row['civicrm_reduction_min'],
+      "reduction_max" => $row['civicrm_reduction_max'],
+      "actualAmountMin" => $row['civicrm_actual_amount_min'],
+      "actualAmountMax" => $row['civicrm_actual_amount_max'],
+      "reduction_new_min" => $row['civicrm_reduction_new_min'],
+      "reduction_new_max" => $row['civicrm_reduction_new_max'],
+      "actualAmountMin_new" => $row['civicrm_actual_amount_min_new'],
+      "actualAmountMax_new" => $row['civicrm_actual_amount_max_new'],
+      "contribution_new_min" => $row['civicrm_contribution_new_min'],
+      "contribution_new_max" => $row['civicrm_contribution_new_max']
     ];
 
     require_once 'includes/AEAT182.php';
