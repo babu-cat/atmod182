@@ -1,6 +1,10 @@
 <?php
 
 require_once 'atmod182.civix.php';
+$autoload = __DIR__ . '/vendor/autoload.php';
+if (file_exists($autoload)) {
+  require_once $autoload;
+}
 
 use CRM_Atmod182_ExtensionUtil as E;
 

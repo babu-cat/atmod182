@@ -33,9 +33,11 @@
  */
 require_once 'CRM/Atmod182/Form/ATMod182Admin.php';
 require_once 'CRM/Atmod182/utils.php';
-require_once 'includes/AEAT182.php';
 
 use CRM_Atmod182_ExtensionUtil as E;
+
+use babucat\AEAT\AEAT182;
+
 
 class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Repeat {
   const PAIS_ESPANYA = 1198;
@@ -552,8 +554,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       list($cleanThisYearAmount) = explode(' ', $row['contribution1_total_amount_sum']);
       list($cleanLastYearAmount) = explode(' ', $row['contribution2_total_amount_sum']);
 
-      require_once 'includes/AEAT182.php';
-
       $contactType = NULL;
       if ($row['contact_civireport_contact_type'] == "Individual") {
         $contactType = AEAT182::NATURAL_PERSON;
@@ -587,7 +587,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_contribution_new_min'] = strval($result['contribution_new_min']);
       $rows[$rowNum]['civicrm_contribution_new_max'] = strval($result['contribution_new_max']);
             
-      if ( $contactType == AEAT182::NATURAL_PERSON && $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),AEAT182::ACC_CATALONIA) ) {
+      if ( $contactType == AEAT182::NATURAL_PERSON && $this->_cataloniaDeductionPercentage && \babucat\AEAT\AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),\babucat\AEAT\AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
       }
 
@@ -638,7 +638,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       }
     
     if ($this->_export182Submitted || $this->_validate182Submitted || $this->_export993Submitted) {
-      require_once 'includes/AEAT182.php';
       $model = new AEAT182(autonomousDeduction: $this->autonomousDeduction);
 
       $declarant = array(
@@ -798,8 +797,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       "contribution_new_max" => $row['civicrm_contribution_new_max']
     ];
 
-    require_once 'includes/AEAT182.php';
-    if ( $nature == 'F' && $this->_cataloniaDeductionPercentage && AEAT182::isAutonomousCommunityProvince($provinceCode,AEAT182::ACC_CATALONIA) ) {
+    if ( $nature == 'F' && $this->_cataloniaDeductionPercentage && \babucat\AEAT\AEAT182::isAutonomousCommunityProvince($provinceCode,\babucat\AEAT\AEAT182::ACC_CATALONIA) ) {
       $declared['ACDeduction'] = AEAT182::ACC_CATALONIA;
       $declared['ACDeductionNumber'] = $this->_cataloniaDeductionPercentage . '00';
     }

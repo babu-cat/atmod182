@@ -1,0 +1,15 @@
+{
+    "name": "civicrm/cat.babu.atmod182",
+    "type": "civicrm-extension",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+          "type": "git",
+          "url": "https://github.com/babu-cat/AEAT.git"
+        }
+      ],
+    "require": {
+        "babucat/aeat": "dev-master"
+    }
+}
