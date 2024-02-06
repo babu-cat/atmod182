@@ -5,7 +5,7 @@
     "minimum-stability": "stable",
     "repositories": [
         {
-          "type": "git",
+          "type": "vcs",
           "url": "https://github.com/babu-cat/AEAT.git"
         }
       ],
