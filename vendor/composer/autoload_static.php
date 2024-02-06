@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit289aa034347598e831f67ff3c497d7ac
+class ComposerStaticInit08ae98afb2eabdaaf0466d1a1c0dc4e8
 {
     public static $files = array (
         'd5d58033b8c8a673ae33cbe00864d0d3' => __DIR__ . '/..' . '/babucat/aeat/src/AEAT182.php',
@@ -34,9 +34,9 @@ class ComposerStaticInit289aa034347598e831f67ff3c497d7ac
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit289aa034347598e831f67ff3c497d7ac::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit289aa034347598e831f67ff3c497d7ac::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit289aa034347598e831f67ff3c497d7ac::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit08ae98afb2eabdaaf0466d1a1c0dc4e8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit08ae98afb2eabdaaf0466d1a1c0dc4e8::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit08ae98afb2eabdaaf0466d1a1c0dc4e8::$classMap;
 
         }, null, ClassLoader::class);
     }
