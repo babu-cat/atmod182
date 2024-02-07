@@ -1,3 +1,8 @@
+## Release 1.5.8 (2024-02-07)
+- Update AEAT PHP library from 1.5.7 to [1.5.8](https://github.com/babu-cat/AEAT/releases/tag/1.5.8)
+- Add range intervals columns for tax calculator imports
+- Include AEAT PHP library via composer
+
 ## Release 1.5.7 (2024-01-18)
 
 - Show summary results table on the 182 report when validates
