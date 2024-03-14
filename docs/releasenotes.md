@@ -1,4 +1,9 @@
+## Release 1.5.9 (2024-03-14)
+
+- Update AEAT PHP library from 1.5.8 to [1.5.9](https://github.com/babu-cat/AEAT/releases/tag/1.5.9)
+
 ## Release 1.5.8 (2024-02-07)
+
 - Update AEAT PHP library from 1.5.7 to [1.5.8](https://github.com/babu-cat/AEAT/releases/tag/1.5.8)
 - Add range intervals columns for tax calculator imports
 - Include AEAT PHP library via composer
