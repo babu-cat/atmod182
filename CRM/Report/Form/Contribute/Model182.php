@@ -632,6 +632,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     }
     
     if($this->catalan_provinces == $this->_submitValues['state_province_id_value'] && 
+      $this->_submitValues['contact_type_value'] &&
       sizeof($this->_submitValues['contact_type_value']) == 1 && 
       $this->_submitValues['contact_type_value'][0] == 'Individual'){
         $this->assign('enable_993', 1);

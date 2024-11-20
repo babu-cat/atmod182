@@ -1,3 +1,10 @@
+# Release Notes
+
+## Release 1.5.10 (2024-11-20)
+
+- Update AEAT PHP library from 1.5.9 to [1.5.10](https://github.com/babu-cat/AEAT/releases/tag/1.5.10)
+- Add new SearchKit Action "Set More Donation At SameCost" to fill custom fields related to 2024 new spanish tax advantages
+
 ## Release 1.5.9 (2024-03-14)
 
 - Update AEAT PHP library from 1.5.8 to [1.5.9](https://github.com/babu-cat/AEAT/releases/tag/1.5.9)

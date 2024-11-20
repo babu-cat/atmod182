@@ -177,6 +177,47 @@
           {$form.atmod182_locationTypeField.html}
         </td>
       </tr>
+      <tr class="crm-atmod182-form-block-atmod182_2024TotalField">
+        <td class="label">
+          {$form.atmod182_2024TotalField.label}
+        </td>
+        <td>
+          {$form.atmod182_2024TotalField.html}
+        </td>
+      </tr>
+      <tr class="crm-atmod182-form-block-atmod182_moreDonationSameCostField">
+        <td class="label">
+          {$form.atmod182_moreDonationSameCostField.label}
+        </td>
+        <td>
+          {$form.atmod182_moreDonationSameCostField.html}
+        </td>
+      </tr>
+      <tr class="crm-atmod182-form-block-atmod182_beforeMinDonationDevolutionField">
+        <td class="label">
+          {$form.atmod182_beforeMinDonationDevolutionField.label}
+        </td>
+        <td>
+          {$form.atmod182_beforeMinDonationDevolutionField.html}
+        </td>
+      </tr>
+      <tr class="crm-atmod182-form-block-atmod182_currentMinDonationDevolutionField">
+        <td class="label">
+          {$form.atmod182_currentMinDonationDevolutionField.label}
+        </td>
+        <td>
+          {$form.atmod182_currentMinDonationDevolutionField.html}
+        </td>
+      </tr>
+      <tr class="crm-atmod182-form-block-atmod182_realMaxDonationCostField">
+        <td class="label">
+          {$form.atmod182_realMaxDonationCostField.label}
+        </td>
+        <td>
+          {$form.atmod182_realMaxDonationCostField.html}
+        </td>
+      </tr>
+
     </table>
   </div>
 

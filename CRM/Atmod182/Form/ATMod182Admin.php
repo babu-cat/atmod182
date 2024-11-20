@@ -31,6 +31,11 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
     'atmod182_declare182' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_declaredAportation' => self::ADMOD182_PREFERENCES_NAME,
     'atmod182_locationTypeField' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_2024TotalField' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_moreDonationSameCostField' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_beforeMinDonationDevolutionField' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_currentMinDonationDevolutionField' => self::ADMOD182_PREFERENCES_NAME,
+    'atmod182_realMaxDonationCostField' => self::ADMOD182_PREFERENCES_NAME,
   );
 
   /**
@@ -147,6 +152,21 @@ class CRM_Atmod182_Form_ATMod182Admin extends CRM_Admin_Form_Setting {
       $customBooleanFieldsNames[$values['id']] = $values['label'];
     }
     return $customBooleanFieldsNames;
+  }
+
+  public static function getNumberFields() {
+    $customNumberFieldsNames = CRM_Atmod182_Form_ATMod182Admin::getNullSelectOption(FALSE);
+    $customNumberFields = civicrm_api3('CustomField', 'get', [
+      'sequential' => 1,
+      'options' => ['limit' => 0],
+      'data_type' => "Number",
+      'is_active' => 1,
+      'is_searchable' => 1,
+    ]);
+    foreach ($customNumberFields['values'] as $values) {
+      $customNumberFieldsNames[$values['id']] = $values['label'];
+    }
+    return $customNumberFieldsNames;
   }
 
    // @todo Crear una función que busque solo seleccionables de 1 sola opción: getSingleCheckBoxStringFields
