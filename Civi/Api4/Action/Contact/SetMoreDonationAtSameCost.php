@@ -120,11 +120,11 @@ class SetMoreDonationAtSameCost extends \Civi\Api4\Generic\BasicBatchAction
         
         //print_r(json_encode($result));die;
         
-        $donationAmount2024FieldValue = floatval(str_replace(',', '.', str_replace('.', '', $contact['SUM:contribution24.total_amount'])));
-        $moreDonationSameCostFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $contact['SUM:contribution24.total_amount']))) +
+        $donationAmount2024FieldValue = $contact['SUM:contribution24.total_amount'];
+        $moreDonationSameCostFieldValue = $contact['SUM:contribution24.total_amount'] +
                                           floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min'])));
         $beforeMinDonationDevolutionFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['reduction_min'])));
-        $currentMinDonationDevolutionFieldValue = floatval(str_replace(',', '.', str_replace('.', '',  $contact['SUM:contribution24.total_amount']))) +
+        $currentMinDonationDevolutionFieldValue = $contact['SUM:contribution24.total_amount'] +
                                                   floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min']))) -
                                                   floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));
         $realMaxDonationCostFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));

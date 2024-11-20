@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.5.11 (2024-11-20)
+
+- Fix for decimal amounts on "Set More Donation At SameCost" SearchKit Action
+
 ## Release 1.5.10 (2024-11-20)
 
 - Update AEAT PHP library from 1.5.9 to [1.5.10](https://github.com/babu-cat/AEAT/releases/tag/1.5.10)
