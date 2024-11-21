@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.5.12 (2024-11-21)
+
+- Fix wrong calculation for custom fields on "Set More Donation At SameCost" SearchKit Action
+
 ## Release 1.5.11 (2024-11-20)
 
 - Fix for decimal amounts on "Set More Donation At SameCost" SearchKit Action

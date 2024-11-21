@@ -44,44 +44,47 @@ class SetMoreDonationAtSameCost extends \Civi\Api4\Generic\BasicBatchAction
 
     foreach ($item as $key => $contact_id) {
 
+      // @todo: segurament seria més simple fer la query d'aquest estil
+
+      // SELECT 
+      //     p.name, 
+      //     SUM(CASE WHEN c.year = 2023 THEN c.amount ELSE 0 END) AS contributions_2023,
+      //     SUM(CASE WHEN c.year = 2024 THEN c.amount ELSE 0 END) AS contributions_2024
+      // FROM 
+      //     person p
+      // JOIN 
+      //     contribution c
+      // ON 
+      //     p.id = c.person_id
+      // WHERE 
+      //     p.id = 30
+      // GROUP BY 
+      //     p.name;
+
       $contactData = \Civi\Api4\Contact::get(TRUE)
         ->addSelect(
           'contact_type',
-          'SUM(contribution24.total_amount)',
-          'SUM(contribution23.total_amount)',
-          'SUM(contribution22.total_amount)',
+          'SUM(contribution222324.total_amount)',
+          'YEAR(contribution222324.receive_date)',
           'address_primary.postal_code',
           'address_primary.country_id'
         )
         ->addJoin(
-          'Contribution AS contribution24',
+          'Contribution AS contribution222324',
           'LEFT',
-          ['contribution24.receive_date', '>=', "'2024-01-01'"],
-          ['contribution24.receive_date', '<=', "'2024-12-31'"],
-          ['contribution24.financial_type_id', 'IN', $financialTypes],
-          ['contribution24.contribution_status_id', '=', 1]
-        )
-        ->addJoin(
-          'Contribution AS contribution23',
-          'LEFT',
-          ['contribution23.receive_date', '>=', "'2023-01-01'"],
-          ['contribution23.receive_date', '<=', "'2023-12-31'"],
-          ['contribution23.financial_type_id', 'IN', $financialTypes],
-          ['contribution23.contribution_status_id', '=', 1]
-        )
-        ->addJoin(
-          'Contribution AS contribution22',
-          'LEFT',
-          ['contribution22.receive_date', '>=', "'2022-01-01'"],
-          ['contribution22.receive_date', '<=', "'2022-12-31'"],
-          ['contribution22.financial_type_id', 'IN', $financialTypes],
-          ['contribution22.contribution_status_id', '=', 1]
+          ['contribution222324.receive_date', '>=', "'2022-01-01'"],
+          ['contribution222324.receive_date', '<=', "'2024-12-31'"],
+          ['contribution222324.financial_type_id', 'IN', $financialTypes],
+          ['contribution222324.contribution_status_id', '=', 1]
         )
         ->addWhere('id', '=', $contact_id)
+        ->addGroupBy('id')
+        ->addGroupBy('YEAR(contribution222324.receive_date)')
         ->execute();
 
+        
       foreach ($contactData as $contact) {
-
+        
         if ($contact["address_primary.country_id"] != $spain) {
           break; // Only Spanish residents
         }
@@ -94,51 +97,47 @@ class SetMoreDonationAtSameCost extends \Civi\Api4\Generic\BasicBatchAction
             $contactType = AEAT182::SOCIETIES;
             break;
         }
-
-        $totalAmount24 = $contact['SUM:contribution24.total_amount'];
-        if ($totalAmount24 === null) {
-          $totalAmount24 = 0;
+        switch ($contact['YEAR:contribution222324.receive_date']) {
+          case '2024':
+            $totalAmount24 = $contact['SUM:contribution222324.total_amount'];
+            break;
+          case '2023':
+            $totalAmount23 = $contact['SUM:contribution222324.total_amount'];
+            break;
+          case '2022':
+            $totalAmount22 = $contact['SUM:contribution222324.total_amount'];
+            break;
         }
-        $totalAmount23 = $contact['SUM:contribution23.total_amount'];
-        if ($totalAmount23 === null) {
-          $totalAmount23 = 0;
-        }
-        $totalAmount22 = $contact['SUM:contribution22.total_amount'];
-        if ($totalAmount22 === null) {
-          $totalAmount22 = 0;
-        }
-
-        $aeat = new AEAT182(autonomousDeduction: $autonomousDeduction);
-        $result = $aeat->getDeductionPercentAndDonationsRecurrence(
-          $contactType,
-          $totalAmount24,
-          $totalAmount23,
-          $totalAmount22,
-          $contact['address_primary.postal_code'],
-          FALSE
-        );
-        
-        //print_r(json_encode($result));die;
-        
-        $donationAmount2024FieldValue = $contact['SUM:contribution24.total_amount'];
-        $moreDonationSameCostFieldValue = $contact['SUM:contribution24.total_amount'] +
-                                          floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min'])));
-        $beforeMinDonationDevolutionFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['reduction_min'])));
-        $currentMinDonationDevolutionFieldValue = $contact['SUM:contribution24.total_amount'] +
-                                                  floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min']))) -
-                                                  floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));
-        $realMaxDonationCostFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));
-
-        $results = \Civi\Api4\Contact::update(TRUE)
-        ->addValue($donationAmount2024Field, $donationAmount2024FieldValue)
-        ->addValue($moreDonationSameCostField, $moreDonationSameCostFieldValue)
-        ->addValue($beforeMinDonationDevolutionField, $beforeMinDonationDevolutionFieldValue)
-        ->addValue($currentMinDonationDevolutionField, $currentMinDonationDevolutionFieldValue)
-        ->addValue($realMaxDonationCostField, $realMaxDonationCostFieldValue)
-        ->addWhere('id', '=', $contact_id)
-        ->execute();
-
+        $postalCode = $contact['address_primary.postal_code'];
       }
+
+      $aeat = new AEAT182(autonomousDeduction: $autonomousDeduction);
+      $result = $aeat->getDeductionPercentAndDonationsRecurrence(
+        $contactType,
+        $totalAmount24,
+        $totalAmount23,
+        $totalAmount22,
+        $postalCode,
+        FALSE
+      );
+      
+      $donationAmount2024FieldValue = $totalAmount24;
+      $moreDonationSameCostFieldValue = $totalAmount24 +
+                                        floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min'])));
+      $beforeMinDonationDevolutionFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['reduction_min'])));
+      $currentMinDonationDevolutionFieldValue = $totalAmount24 +
+                                                floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min']))) -
+                                                floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));
+      $realMaxDonationCostFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['actual_amount_max'])));
+
+      $results = \Civi\Api4\Contact::update(TRUE)
+      ->addValue($donationAmount2024Field, $donationAmount2024FieldValue)
+      ->addValue($moreDonationSameCostField, $moreDonationSameCostFieldValue)
+      ->addValue($beforeMinDonationDevolutionField, $beforeMinDonationDevolutionFieldValue)
+      ->addValue($currentMinDonationDevolutionField, $currentMinDonationDevolutionFieldValue)
+      ->addValue($realMaxDonationCostField, $realMaxDonationCostFieldValue)
+      ->addWhere('id', '=', $contact_id)
+      ->execute();
 
     }
 
