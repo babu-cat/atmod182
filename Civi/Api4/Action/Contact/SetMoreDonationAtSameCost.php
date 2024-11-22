@@ -123,7 +123,7 @@ class SetMoreDonationAtSameCost extends \Civi\Api4\Generic\BasicBatchAction
       
       $donationAmount2024FieldValue = $totalAmount24;
       $moreDonationSameCostFieldValue = $totalAmount24 +
-                                        floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min'])));
+                                        floor(floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min']))));
       $beforeMinDonationDevolutionFieldValue = floatval(str_replace(',', '.', str_replace('.', '', $result['reduction_min'])));
       $currentMinDonationDevolutionFieldValue = $totalAmount24 +
                                                 floatval(str_replace(',', '.', str_replace('.', '', $result['contribution_new_min']))) -
@@ -133,8 +133,8 @@ class SetMoreDonationAtSameCost extends \Civi\Api4\Generic\BasicBatchAction
       $results = \Civi\Api4\Contact::update(TRUE)
       ->addValue($donationAmount2024Field, $donationAmount2024FieldValue)
       ->addValue($moreDonationSameCostField, $moreDonationSameCostFieldValue)
-      ->addValue($beforeMinDonationDevolutionField, $beforeMinDonationDevolutionFieldValue)
-      ->addValue($currentMinDonationDevolutionField, $currentMinDonationDevolutionFieldValue)
+      ->addValue($beforeMinDonationDevolutionField, floor($beforeMinDonationDevolutionFieldValue))
+      ->addValue($currentMinDonationDevolutionField, floor($currentMinDonationDevolutionFieldValue))
       ->addValue($realMaxDonationCostField, $realMaxDonationCostFieldValue)
       ->addWhere('id', '=', $contact_id)
       ->execute();

@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.5.13 (2024-12-22)
+
+- Floor decinaml rounding for results in "Set More Donation At Same Cost" SearchKit Action
+
 ## Release 1.5.12 (2024-11-21)
 
 - Fix wrong calculation for custom fields on "Set More Donation At SameCost" SearchKit Action
