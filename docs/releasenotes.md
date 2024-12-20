@@ -1,6 +1,10 @@
 # Release Notes
 
-## Release 1.5.13 (2024-12-22)
+## Release 1.6.0 (2024-12-20)
+
+- Remove code related to obsoleted normative
+
+## Release 1.5.13 (2024-11-22)
 
 - Floor decimal rounding for results in "Set More Donation At Same Cost" SearchKit Action
 

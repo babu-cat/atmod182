@@ -119,24 +119,3 @@ function atmod182_civicrm_buildForm($formName, &$form) {
   }
 
 }
-
-/**
- * Implements hook_civicrm_searchKitTasks().
- *
- * @param array[] $tasks
- * @param bool $checkPermissions
- * @param int|null $userID
- */
-function atmod182_civicrm_searchKitTasks(array &$tasks, bool $checkPermissions, ?int $userID) {
-  $tasks['Contact']['SetMoreDonationAtSameCost'] = [
-    'title' => E::ts('Set More Donation At Same Cost'),
-    'icon' => 'fa-level-up',
-    'apiBatch' => [
-      'action' => 'SetMoreDonationAtSameCost',
-      'confirmMsg' => E::ts('Are you sure you want to run SetMoreDonationAtSameCost on %1 contacts?'),
-      'runMsg' => E::ts('Running SetMoreDonationAtSameCost on %1 contacts...'),
-      'successMsg' => E::ts('Successfully ran SetMoreDonationAtSameCost on %1 contacts.'),
-      'errorMsg' => E::ts('An error occurred while attempting to run SetMoreDonationAtSameCost on %1 contacts.'),
-    ],
-  ];
-}

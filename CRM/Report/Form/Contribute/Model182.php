@@ -80,6 +80,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
   protected $_countryField = 0;
   protected $_declaredAportationField = 0;
   protected $_declareField = 0;
+  protected $_locationTypeField = 0;
 
   protected $_configErrors = array();
   protected $_integrityErrors = array();
@@ -397,35 +398,8 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       }
     }
 
-    $twoYearBefore = date("Y", strtotime("-3 year"));
-
     $this->_columnHeaders += array('contribution1_total_amount' => array('title' => "January 1st, " . date("Y", strtotime("-1 year")) . " - December 31st, " . date("Y", strtotime("-1 year")), 'type' => 1));
     $this->_columnHeaders += array('contribution2_total_amount' => array('title' => "January 1st, " . date("Y", strtotime("-2 year")) . " - December 31st, " . date("Y", strtotime("-2 year")), 'type' => 1));
-    $this->_columnHeaders += array('contribution3_total_amount' => array('title' => "January 1st, $twoYearBefore - December 31st, $twoYearBefore", 'type' => 1));
-
-    $contribucions3 = array();
-    if ( !empty($llista) ) {
-      // llama a la api que retorna las contribuciones de hace 2 años de los contactos anteriormente introducidos en el array
-      $result = civicrm_api3('Contribution', 'get', array(
-        'sequential' => 1,
-        'return' => array('total_amount'),
-        'contact_id' => array('IN' => array_keys($llista)),
-        'receive_date' => array('BETWEEN' => array($twoYearBefore . '/01/01', $twoYearBefore . '/12/31')),
-        'financial_type_id' => array('IN' => $this->_financialTypesField),
-        'contribution_status_id'=> 'Completed',
-        'options' => array('limit' => 0),
-      ));
-
-      // agrupa todas las contribuciones de un mismo contacto
-      foreach ($result['values'] as $rowNum => $value) {
-        if ( isset($contribucions3[$value['contact_id']]) ) {
-          $contribucions3[$value['contact_id']] += $value['total_amount'];
-        }
-        else {
-          $contribucions3[$value['contact_id']] = $value['total_amount'];
-        }
-      }
-    }
 
     $this->_columnHeaders += array('civicrm_contact_identificador_fiscal' => array('title' => 'Identificador fiscal', 'type' => 2));
     $this->_columnHeaders += array('civicrm_contact_percentatge_deduccio' => array('title' => 'Porcentaje deducción', 'type' => 2));
@@ -436,25 +410,12 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
     $this->_columnHeaders += array('civicrm_reduction_max' => array('title' => 'Importe máximo desgravado', 'type' => 1));
     $this->_columnHeaders += array('civicrm_actual_amount_min' => array('title' => 'Importe real mínimo', 'type' => 1));
     $this->_columnHeaders += array('civicrm_actual_amount_max' => array('title' => 'Importe real máximo', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_reduction_new_min' => array('title' => 'Importe desgravado mínimo normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_reduction_new_max' => array('title' => 'Importe desgravado máximo normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_actual_amount_min_new' => array('title' => 'Importe real mínimo normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_actual_amount_max_new' => array('title' => 'Importe real máximo normativa 2024', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_contribution_new_min' => array('title' => 'Incremento mínimo sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
-    $this->_columnHeaders += array('civicrm_contribution_new_max' => array('title' => 'Incremento máximo sugerido con el mismo coste para el donante (nueva ley de mecenazgo)', 'type' => 1));
     
     if ( $this->_cataloniaDeductionPercentage ) {
       $this->_columnHeaders += array('civicrm_catalonia_deduction_percentage' => array('title' => 'Porcentaje de deducción autonómica', 'type' => 1));
     }
 
     foreach ( $rows as $rowNum => $row ) {
-      // si el contacto existe en el array, se le asigna su contribución de hace 2 años
-      if ( array_key_exists($row['contact_civireport_id'], $contribucions3)) {
-        $rows[$rowNum]['contribution3_total_amount'] = $contribucions3[$row['contact_civireport_id']];
-      }
-      else {
-        $rows[$rowNum]['contribution3_total_amount'] = 0;
-      }
 
       $fiscalId = ($row['contact_civireport_contact_type'] == 'Individual') ? $row[$this->_dniAlias] : $row[$this->_CIFAlias];
       $rows[$rowNum]['civicrm_contact_identificador_fiscal'] = strtoupper($fiscalId);
@@ -570,7 +531,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
         $contactType,
         $cleanThisYearAmount,
         $cleanLastYearAmount,
-        $row['contribution3_total_amount'],
         $row['address_civireport_postal_code']
       );
       $rows[$rowNum]['civicrm_contact_clave'] = "A";
@@ -580,12 +540,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $rows[$rowNum]['civicrm_reduction_max'] = strval($result['reduction_max']);
       $rows[$rowNum]['civicrm_actual_amount_min'] = strval($result['actual_amount_min']);
       $rows[$rowNum]['civicrm_actual_amount_max'] = strval($result['actual_amount_max']);
-      $rows[$rowNum]['civicrm_reduction_new_min'] = strval($result['reduction_new_min']);
-      $rows[$rowNum]['civicrm_reduction_new_max'] = strval($result['reduction_new_max']);
-      $rows[$rowNum]['civicrm_actual_amount_min_new'] = strval($result['actual_amount_min_new']);
-      $rows[$rowNum]['civicrm_actual_amount_max_new'] = strval($result['actual_amount_max_new']);
-      $rows[$rowNum]['civicrm_contribution_new_min'] = strval($result['contribution_new_min']);
-      $rows[$rowNum]['civicrm_contribution_new_max'] = strval($result['contribution_new_max']);
             
       if ( $contactType == AEAT182::NATURAL_PERSON && $this->_cataloniaDeductionPercentage && \babucat\AEAT\AEAT182::isAutonomousCommunityProvince(substr( $row['address_civireport_postal_code'], 0, 2 ),\babucat\AEAT\AEAT182::ACC_CATALONIA) ) {
         $rows[$rowNum]['civicrm_catalonia_deduction_percentage'] = $this->_cataloniaDeductionPercentage . ' %';
@@ -593,7 +547,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
 
       $rows[$rowNum]['contribution1_total_amount'] = normalizeMoney($row['contribution1_total_amount_sum']);
       $rows[$rowNum]['contribution2_total_amount'] = normalizeMoney($row['contribution2_total_amount_sum']);
-      $rows[$rowNum]['contribution3_total_amount'] = normalizeMoney($row['contribution3_total_amount']);
 
       array_push($idFiscales, $rows[$rowNum]['civicrm_contact_identificador_fiscal']);
     }
@@ -790,12 +743,6 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       "reduction_max" => $row['civicrm_reduction_max'],
       "actualAmountMin" => $row['civicrm_actual_amount_min'],
       "actualAmountMax" => $row['civicrm_actual_amount_max'],
-      "reduction_new_min" => $row['civicrm_reduction_new_min'],
-      "reduction_new_max" => $row['civicrm_reduction_new_max'],
-      "actualAmountMin_new" => $row['civicrm_actual_amount_min_new'],
-      "actualAmountMax_new" => $row['civicrm_actual_amount_max_new'],
-      "contribution_new_min" => $row['civicrm_contribution_new_min'],
-      "contribution_new_max" => $row['civicrm_contribution_new_max']
     ];
 
     if ( $nature == 'F' && $this->_cataloniaDeductionPercentage && \babucat\AEAT\AEAT182::isAutonomousCommunityProvince($provinceCode,\babucat\AEAT\AEAT182::ACC_CATALONIA) ) {
