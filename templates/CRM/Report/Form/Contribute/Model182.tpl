@@ -24,9 +24,25 @@
  +--------------------------------------------------------------------+
 *}
 
+<style>
+/* Forcem estils Bootstrap que no s'apliquen a CiviReports */
+h3.label-danger {
+  background: var(--crm-c-alert);
+  color: var(--crm-c-alert-text);
+}
+h3.label-warning {
+  background: var(--crm-c-warning);
+  color: var(--crm-c-warning-text);
+}
+</style>
+
 {if count($configErrors) > 0}
-  <div class="messages error no-popup">
-    <h2>El módulo ATMod182 no se ha configurado correctamente. Por favor revise la <a href="/civicrm/admin/atmod182">configuración</a>.</h2>
+  <div class="messages status error alert no-popup">
+    <h3 class="label-danger">
+      <i class="crm-i fa-exclamation-circle" aria-hidden="true"></i>
+      {ts domain="cat.babu.atmod182"}<strong>Errores de configuración del módulo 182</strong>{/ts}
+    </h3>
+    El módulo ATMod182 no se ha configurado correctamente. Por favor revise la <a href="/civicrm/admin/atmod182">configuración</a>.
     <p><strong>Errores encontrados:</strong></p>
     <ul>
     {foreach from=$configErrors item=configError_id}
@@ -81,15 +97,19 @@
   {/if}
 
   {if $cataloniaDeductionPercentage}
-    <div class="messages warning no-popup">
+    <div class="messages status warning no-popup">
+      <h3 class="label-warning">
+        <i class="crm-i fa-exclamation-triangle"></i>
+        {ts domain="cat.babu.atmod182"}<strong>Deducción autonómica Catalunya</strong>{/ts}
+      </h3>
       Se ha configurado un <strong>porcentaje de deducción para las personas físicas residentes en Catalunya del {$cataloniaDeductionPercentage}%</strong>. Comprueba que tu entidad está dada de alta en el <a href="https://llengua.gencat.cat/ca/serveis/entitats/cens-entitats">Censo de entidades de fomento de la lengua catalana</a>. En caso contrario es necesario cambiar la <a href="/civicrm/admin/atmod182">configuración del módulo 182</a>. Si no sabes cómo o no tienes permisos, contacta con el administrador del sitio.
       {if $enable_993 == 0}
-        <p style='margin-bottom:0em'>Para generar el <strong>modelo 993</strong>, antes deben de aplicarse los siguientes filtros:
+        <div style='margin-bottom:0em'>Para generar el <strong>modelo 993</strong>, antes deben de aplicarse los siguientes filtros:
           <ul>
             <li>Tipo de contacto: <strong>{ts}Individual{/ts}</strong></li>
             <li>Estado/provincia: <strong>Barcelona, Girona, Lleida y Tarragona</strong></li>
           </ul>
-        </p>
+        </div>
       {/if}
     </div>
 
@@ -98,8 +118,11 @@
 
   {if $filterDate == 'previous.year'}
 	  {if $species > 0}
-	    <div class="messages error no-popup">
-		  <fieldset><legend>{ts domain="cat.babu.atmod182"}Aportaciones en especies{/ts}</legend>
+	    <div class="messages status error alert no-popup">
+      <h3 class="label-danger">
+        <i class="crm-i fa-exclamation-circle" aria-hidden="true"></i>
+        {ts domain="cat.babu.atmod182"}Aportaciones en especies{/ts}
+      </h3>
 		  {if $species == 1}
   			<strong>{ts domain="cat.babu.atmod182"}Atención!{/ts}</strong> Hay {$species} contacto con un donativo en especie durante el año {$previousYear}.
 	  	{else}
@@ -110,25 +133,37 @@
 	  </div>
 	  {/if}
   {else}
-	  <div class="messages error no-popup">
+	  <div class="messages status error alert no-popup">
+    <h3 class="label-danger">
+      <i class="crm-i fa-exclamation-circle" aria-hidden="true"></i>
+      {ts domain="cat.babu.atmod182"}Error de filtros de informe{/ts}
+    </h3>
 		  <strong>Atención!</strong> No se ha seleccionado 'Año anterior' como filtro del primer rango de fechas.
 	  </div>
   {/if}
   {if $warningErrors && count($warningErrors) > 0}
-  	<div class="messages warning no-popup">
-  	  {foreach from=$warningErrors item=warning}
-  	   	<li>
-          <span>{$warning}</span>
-        </li>
-      {/foreach}
+  	<div class="messages status warning no-popup">
+    <h3 class="label-warning">
+      <i class="crm-i fa-exclamation-triangle"></i>
+      {ts domain="cat.babu.atmod182"}<strong>Avisos de preprocesado</strong>{/ts}
+    </h3>
+    {if $warningErrors|@count > 0}
+      <ul>
+        {foreach from=$warningErrors item=warning}
+          <li>
+            <span>{$warning}</span>
+          </li>
+        {/foreach}
+        </ul>
+    {/if}
   	</div>
   {/if}
   {if (($errors && count($errors) > 0)) || ($integrityErrors && (count($integrityErrors) > 0))}
     <div id="errors">
-      <div class="messages error no-popup">
-        <h3 class="nobackground">
-          <i class="crm-i fa-exclamation-triangle"></i>
-          <strong>{ts domain="cat.babu.atmod182"}Atención! Se han detectado errores que deben ser corregidos antes de poder exportar el fichero 182{/ts}</strong>
+      <div class="messages status error alert no-popup">
+        <h3 class="label-danger">
+          <i class="crm-i fa-exclamation-circle" aria-hidden="true"></i>
+          <strong>{ts domain="cat.babu.atmod182"}Atención! Se han detectado errores en la validación que deben ser corregidos antes de poder exportar el fichero 182{/ts}</strong>
         </h3>
         <hr>
         <strong>{ts domain="cat.babu.atmod182"}{/ts}</strong>
@@ -148,7 +183,7 @@
                 {foreach from=$error item=error_id}
                   <ul>
                     <li>
-                      <p class="messages status crm-error no-popup"> {$error_id.1} </p>
+                      <p class="messages status error alert no-popup"> {$error_id.1} </p>
                     </li>
                   </ul>
                 {/foreach}
@@ -168,15 +203,15 @@
   {/if}
   {if $warnings && count($warnings) > 0}
     <div id="errors">
-      <div class="messages status crm-warning no-popup">
-        <h3 class="nobackground">
+      <div class="messages status warning no-popup">
+        <h3 class="label-warning">
           <i class="crm-i fa-exclamation-triangle"></i>
-          {ts domain="cat.babu.atmod182"}<strong>Avisos</strong>{/ts}
+          {ts domain="cat.babu.atmod182"}<strong>Avisos de validación</strong>{/ts}
         </h3>
         <hr>
         {foreach from=$warnings item=warningsType key=key}
           <br>
-          <h4><strong>{$key}</strong></h4>
+          <strong>{$key}</strong>
           <br>
           {foreach from=$warningsType item=warning}
             <ul>

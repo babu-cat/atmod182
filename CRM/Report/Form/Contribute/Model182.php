@@ -306,7 +306,7 @@ class CRM_Report_Form_Contribute_Model182 extends CRM_Report_Form_Contribute_Rep
       $statistics['no_taxable_no_declare_donation_amount'] = 0;
       $statistics['no_taxable_no_declare_donors'] = 0;
 
-      //@todo Se deberia añadir en la API que el País fuera Espanya
+      // @todo Se deberia añadir en la API que el País fuera Espanya
       $idContributionNoDeclare = civicrm_api3('Contribution', 'get', [
         'sequential' => 1,
         'return' => ["total_amount"],
