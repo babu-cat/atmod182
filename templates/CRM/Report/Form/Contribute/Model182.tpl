@@ -165,7 +165,6 @@ h3.label-warning {
           <i class="crm-i fa-exclamation-circle" aria-hidden="true"></i>
           <strong>{ts domain="cat.babu.atmod182"}Atención! Se han detectado errores en la validación que deben ser corregidos antes de poder exportar el fichero 182{/ts}</strong>
         </h3>
-        <hr>
         <strong>{ts domain="cat.babu.atmod182"}{/ts}</strong>
         <ul>
           {foreach from=$errors item=error key=key}
@@ -208,7 +207,6 @@ h3.label-warning {
           <i class="crm-i fa-exclamation-triangle"></i>
           {ts domain="cat.babu.atmod182"}<strong>Avisos de validación</strong>{/ts}
         </h3>
-        <hr>
         {foreach from=$warnings item=warningsType key=key}
           <br>
           <strong>{$key}</strong>
