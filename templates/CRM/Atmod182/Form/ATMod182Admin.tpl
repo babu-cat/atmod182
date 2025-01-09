@@ -75,7 +75,7 @@
           <span class="crm-marker" title="{ts domain="cat.babu.atmod182"}This field is required.{/ts}">*</span>
         </td>
         <td>
-          {$form.atmod182_dniField.html} {help id=atmod182-dni-id}
+          {$form.atmod182_dniField.html} {help id="atmod182-dni-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_cifField">
@@ -84,7 +84,7 @@
           <span class="crm-marker" title="{ts domain="cat.babu.atmod182"}This field is required.{/ts}">*</span>
         </td>
         <td>
-          {$form.atmod182_cifField.html} {help id=atmod182-cif-id}
+          {$form.atmod182_cifField.html} {help id="atmod182-cif-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_anonymousIndividual">
@@ -101,7 +101,7 @@
           <span class="crm-marker" title="{ts domain="cat.babu.atmod182"}This field is required.{/ts}">*</span>
         </td>
         <td>
-          {$form.atmod182_financialTypeField.html} {help id=atmod182-financialTypeField-id}
+          {$form.atmod182_financialTypeField.html} {help id="atmod182-financialTypeField-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_financialTypeSpeciesField">
@@ -109,7 +109,7 @@
           {$form.atmod182_financialTypeSpeciesField.label}
         </td>
         <td>
-          {$form.atmod182_financialTypeSpeciesField.html} {help id=atmod182-financialTypeSpeciesField-id}
+          {$form.atmod182_financialTypeSpeciesField.html} {help id="atmod182-financialTypeSpeciesField-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_countryField">
@@ -118,7 +118,7 @@
           <span class="crm-marker" title="{ts domain="cat.babu.atmod182"}This field is required.{/ts}">*</span>
         </td>
         <td>
-          {$form.atmod182_countryField.html} {help id=atmod182-countryField-id}
+          {$form.atmod182_countryField.html} {help id="atmod182-countryField-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_fiscalNameField">
@@ -158,7 +158,7 @@
           {$form.atmod182_declare182.label}
         </td>
         <td>
-          {$form.atmod182_declare182.html} {help id=atmod182-declare182-id}
+          {$form.atmod182_declare182.html} {help id="atmod182-declare182-id"}
         </td>
       </tr>
       <tr class="crm-atmod182-form-block-atmod182_declaredAportation">

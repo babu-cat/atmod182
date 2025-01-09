@@ -1,5 +1,13 @@
 # Release Notes
 
+## Release 1.6.2 (2025-01-09)
+
+- Smarty 4 compatibility fixes
+
+## Release 1.6.1 (2024-12-29)
+
+- Fix display issues for new Reverlea theme
+
 ## Release 1.6.0 (2024-12-20)
 
 - Remove code related to obsoleted normative
