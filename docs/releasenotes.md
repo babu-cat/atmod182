@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.6.3 (2025-01-15)
+
+- Update AEAT PHP Library to 1.6.1
+
 ## Release 1.6.2 (2025-01-09)
 
 - Smarty 4 compatibility fixes

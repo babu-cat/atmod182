@@ -3,7 +3,7 @@
         'name' => 'civicrm/cat.babu.atmod182',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '1cdce765ae11b072171666353333dd333e0be366',
+        'reference' => 'a80833d8d4c6375aa2e7691e15b837e33211c84a',
         'type' => 'civicrm-extension',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'babucat/aeat' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b3d7700dd9a26cecb5f95548fe7fb2f22a859c4e',
+            'reference' => '1adc2fd3ea0b733b2869c0c921aa319f9a0c0101',
             'type' => 'library',
             'install_path' => __DIR__ . '/../babucat/aeat',
             'aliases' => array(
@@ -24,7 +24,7 @@
         'civicrm/cat.babu.atmod182' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '1cdce765ae11b072171666353333dd333e0be366',
+            'reference' => 'a80833d8d4c6375aa2e7691e15b837e33211c84a',
             'type' => 'civicrm-extension',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
