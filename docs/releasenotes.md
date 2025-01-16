@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.6.4 (2025-01-16)
+
+- Update AEAT PHP Library to 1.6.2
+
 ## Release 1.6.3 (2025-01-15)
 
 - Update AEAT PHP Library to 1.6.1

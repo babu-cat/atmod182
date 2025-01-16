@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/babu-cat/AEAT.git",
-                "reference": "1adc2fd3ea0b733b2869c0c921aa319f9a0c0101"
+                "reference": "51c22d8c99203ac15d82ffe33275496549449e21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/babu-cat/AEAT/zipball/1adc2fd3ea0b733b2869c0c921aa319f9a0c0101",
-                "reference": "1adc2fd3ea0b733b2869c0c921aa319f9a0c0101",
+                "url": "https://api.github.com/repos/babu-cat/AEAT/zipball/51c22d8c99203ac15d82ffe33275496549449e21",
+                "reference": "51c22d8c99203ac15d82ffe33275496549449e21",
                 "shasum": ""
             },
             "require-dev": {
                 "phpunit/phpunit": "^10.5"
             },
-            "time": "2025-01-15T22:51:21+00:00",
+            "time": "2025-01-16T09:18:07+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "dist",
@@ -51,7 +51,7 @@
             ],
             "description": "Utilidad PHP de propósito general para la confección y presentación de modelos de la [Agencia Estatal de Administració Tributaria](https://www.agenciatributaria.es).",
             "support": {
-                "source": "https://github.com/babu-cat/AEAT/tree/1.6.1",
+                "source": "https://github.com/babu-cat/AEAT/tree/master",
                 "issues": "https://github.com/babu-cat/AEAT/issues"
             },
             "install-path": "../babucat/aeat"
