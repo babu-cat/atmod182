@@ -1,6 +1,6 @@
 {
     "name": "civicrm/cat.babu.atmod182",
-    "type": "civicrm-extension",
+    "type": "civicrm-ext",
     "license": "MIT",
     "minimum-stability": "stable",
     "repositories": [
