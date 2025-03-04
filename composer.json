@@ -10,6 +10,6 @@
         }
       ],
     "require": {
-        "babucat/aeat": "dev-master"
+        "babucat/aeat": "1.6.2"
     }
 }
