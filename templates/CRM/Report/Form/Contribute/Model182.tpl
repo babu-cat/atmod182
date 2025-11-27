@@ -189,7 +189,7 @@ h3.label-warning {
               </li>
             {/if}
           {/foreach}
-          {if count($integrityErrors) > 0}
+          {if isset($integrityErrors) && count($integrityErrors) > 0}
             {foreach from=$integrityErrors item=warning}
               <li>
                 <span>{$warning}</span>
