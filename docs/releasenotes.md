@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.6.5 (2025-11-27)
+
+- Fix TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given
+
 ## Release 1.6.4 (2025-01-16)
 
 - Update AEAT PHP Library to 1.6.2
